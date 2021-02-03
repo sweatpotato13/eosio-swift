@@ -1,7 +1,7 @@
 ![Swift Logo](https://raw.githubusercontent.com/EOSIO/eosio-swift/master/img/swift-logo.png)
 # EOSIO SDK for Swift
 
-[![Software License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/EOSIO/eosio-swift/blob/master/LICENSE)
+[![Software License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/sweatpotato13/eosio-swift/blob/master/LICENSE)
 [![Swift 5.2](https://img.shields.io/badge/Language-Swift_5.2-orange.svg)](https://swift.org)
 ![](https://img.shields.io/badge/Deployment%20Target-iOS%2012-blue.svg)
 
@@ -51,7 +51,7 @@ To date, EOSIO SDK for Swift has only been tested on iOS. The goal, however, is 
 
 Depending on the component(s) you wish to use, the appropriate dependencies will also be installed for you. For example, if you wished to use `EosioSwiftAbieosSerializationProvider`, then the main `EosioSwift` component would also be installed.
 
-If you wish to use all of the components, add the `EosioSwift`, `EosioSwiftAbieosSerializationProvider`, `EosioSwiftEcc` and `EosioSwiftSoftkeySignatureProvider` products from `https://github.com/EOSIO/eosio-swift` to your application dependencies.
+If you wish to use all of the components, add the `EosioSwift`, `EosioSwiftAbieosSerializationProvider`, `EosioSwiftEcc` and `EosioSwiftSoftkeySignatureProvider` products from `https://github.com/sweatpotato13/eosio-swift` to your application dependencies.
 
 Or to include it into a library, add the following to your `Package.swift` definition:
 
@@ -75,7 +75,7 @@ let package = Package(
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
-        .package(name: "EosioSwift", url: "https://github.com/EOSIO/eosio-swift", from: "1.0.0"))
+        .package(name: "EosioSwift", url: "https://github.com/sweatpotato13/eosio-swift", from: "1.0.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -251,9 +251,9 @@ ECC provides the following methods, among others. This list will expand as more 
 
 ### Softkey Signature Provider Usage
 
-**Important:** Softkey Signature Provider stores keys in memory and is therefore not secure. It should only be used for development purposes. In production, we strongly recommend using a signature provider that interfaces with a secure vault, authenticator or wallet, such as the Vault Signature Provider from [EOSIO SDK for Swift: Vault](https://github.com/EOSIO/eosio-swift-vault).
+**Important:** Softkey Signature Provider stores keys in memory and is therefore not secure. It should only be used for development purposes. In production, we strongly recommend using a signature provider that interfaces with a secure vault, authenticator or wallet, such as the Vault Signature Provider from [EOSIO SDK for Swift: Vault](https://github.com/sweatpotato13/eosio-swift-vault).
 
-Generally, signature providers are called by [`EosioTransaction`](Sources/EosioSwift/EosioTransaction/EosioTransaction.swift) during signing. ([See an example here.](https://github.com/EOSIO/eosio-swift#basic-usage)) If you find, however, that you need to get available keys or request signing directly, this library can be invoked as follows:
+Generally, signature providers are called by [`EosioTransaction`](Sources/EosioSwift/EosioTransaction/EosioTransaction.swift) during signing. ([See an example here.](https://github.com/sweatpotato13/eosio-swift#basic-usage)) If you find, however, that you need to get available keys or request signing directly, this library can be invoked as follows:
 
 ```swift
 let signProvider = try? EosioSoftkeySignatureProvider(privateKeys: privateKeysArray)
@@ -275,7 +275,7 @@ signProvider.signTransaction(request: signRequest) { (response) in
 
 ### Key Management and Signing Utilities
 
-Utilities for key generation and management and other signing functionality can be found in the [EOSIO SDK for Swift: Vault](https://github.com/EOSIO/eosio-swift-vault) library.
+Utilities for key generation and management and other signing functionality can be found in the [EOSIO SDK for Swift: Vault](https://github.com/sweatpotato13/eosio-swift-vault) library.
 
 ## Other Code Examples
 
@@ -283,7 +283,7 @@ More examples can be found in the [EXAMPLES.md](EXAMPLES.md) document.
 
 ## iOS Example App
 
-If you'd like to see EOSIO SDK for Swift in action, check out our open source [iOS Example App](https://github.com/EOSIO/eosio-swift-ios-example-app)--a working application that fetches an account's token balance and pushes a transfer action.
+If you'd like to see EOSIO SDK for Swift in action, check out our open source [iOS Example App](https://github.com/sweatpotato13/eosio-swift-ios-example-app)--a working application that fetches an account's token balance and pushes a transfer action.
 
 ## Code Documentation
 
@@ -302,18 +302,18 @@ The core EOSIO SDK for Swift library uses a provider-protocol-driven architectur
 
 ### Signature Provider Protocol
 
-The Signature Provider abstraction is arguably the most useful of all of the [EOSIO SDK for Swift](https://github.com/EOSIO/eosio-swift) providers. It is responsible for:
+The Signature Provider abstraction is arguably the most useful of all of the [EOSIO SDK for Swift](https://github.com/sweatpotato13/eosio-swift) providers. It is responsible for:
 
 * finding out what keys are available for signing (`getAvailableKeys`), and
 * requesting and obtaining transaction signatures with a subset of the available keys (`signTransaction`).
 
-By simply switching out the signature provider on a transaction, signature requests can be routed any number of ways. Need software signing? [Configure the `EosioTransaction`](#basic-usage) with the [Softkey Signature Provider](#softkey-signature-provider-usage) signature provider. Need a signature from keys in the platform's Keychain or Secure Enclave? Take a look at the [Vault Signature Provider](https://github.com/EOSIO/eosio-swift-vault). Need signatures from a wallet on the user's device? A signature provider can do that too!
+By simply switching out the signature provider on a transaction, signature requests can be routed any number of ways. Need software signing? [Configure the `EosioTransaction`](#basic-usage) with the [Softkey Signature Provider](#softkey-signature-provider-usage) signature provider. Need a signature from keys in the platform's Keychain or Secure Enclave? Take a look at the [Vault Signature Provider](https://github.com/sweatpotato13/eosio-swift-vault). Need signatures from a wallet on the user's device? A signature provider can do that too!
 
 All signature providers must conform to the [`EosioSignatureProviderProtocol`](Sources/EosioSwift/EosioSignatureProviderProtocol/EosioSignatureProviderProtocol.swift) Protocol.
 
 EOSIO SDK for Swift does include a signature provider implementation; `EosioSoftkeySignatureProvider`, an example signature provider for signing transactions using K1 keys in memory. _This signature provider stores keys in memory and is therefore not secure. It should only be used for development purposes. In production, we strongly recommend using a signature provider that interfaces with a secure vault, authenticator or wallet._
 
-While it is possible to use `EosioSoftkeySignatureProvider`, [Vault Signature Provider](https://github.com/EOSIO/eosio-swift-vault), a signature provider implementation for signing transactions using keys stored in Keychain or the device's Secure Enclave, is strongly recommended.
+While it is possible to use `EosioSoftkeySignatureProvider`, [Vault Signature Provider](https://github.com/sweatpotato13/eosio-swift-vault), a signature provider implementation for signing transactions using keys stored in Keychain or the device's Secure Enclave, is strongly recommended.
 
 ### RPC Provider Protocol
 
@@ -364,13 +364,13 @@ Response structs are currently incomplete. Some responses will _only_ return the
 
 ## Want to help?
 
-Interested in contributing? That's awesome! Here are some [Contribution Guidelines](https://github.com/EOSIO/eosio-swift/blob/master/CONTRIBUTING.md) and the [Code of Conduct](https://github.com/EOSIO/eosio-swift/blob/master/CONTRIBUTING.md#conduct).
+Interested in contributing? That's awesome! Here are some [Contribution Guidelines](https://github.com/sweatpotato13/eosio-swift/blob/master/CONTRIBUTING.md) and the [Code of Conduct](https://github.com/sweatpotato13/eosio-swift/blob/master/CONTRIBUTING.md#conduct).
 
-We're always looking for ways to improve EOSIO SDK for Swift. Check out our [#enhancement Issues](https://github.com/EOSIO/eosio-swift/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) for ways you can pitch in.
+We're always looking for ways to improve EOSIO SDK for Swift. Check out our [#enhancement Issues](https://github.com/sweatpotato13/eosio-swift/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) for ways you can pitch in.
 
 ## License
 
-[MIT](https://github.com/EOSIO/eosio-swift/blob/master/LICENSE)
+[MIT](https://github.com/sweatpotato13/eosio-swift/blob/master/LICENSE)
 
 ## Important
 
