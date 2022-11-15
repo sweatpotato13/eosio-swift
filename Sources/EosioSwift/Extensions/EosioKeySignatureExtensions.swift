@@ -114,7 +114,14 @@ public extension Data {
 
     /// Returns an EOSIO private key as a string formatted PVT_K1_xxxxxxxxxxxxxxxxxxx
     var toEosioK1PrivateKey: String {
-        return "PVT_K1_" + self.addPrefix(0x80).append4ByteDoubleSha256Suffix.base58EncodedString
+        let k1 = self + "K1".data(using: .utf8)!
+        let check = Data(RIPEMD160.hash(message: k1).prefix(4))
+        return "PVT_K1_" + ((self + check).base58EncodedString)
+    }
+
+    /// Returns a legacy EOSIO public key as a string formatted 5xxxxxxxxxxxxxxxxxxx.
+    var toEosioLegacyPrivateKey: String {
+        return self.addPrefix(0x80).append4ByteDoubleSha256Suffix.base58EncodedString
     }
 
     /// Init data signature from EOSIO R1 signature string.
@@ -217,8 +224,8 @@ public extension Data {
             keyToHash = key + "R1".data(using: .utf8)!
             hash = RIPEMD160.hash(message: keyToHash)
         } else if components.version == "K1" {
-            keyToHash = key
-            hash = keyToHash.sha256.sha256
+            keyToHash = key + "K1".data(using: .utf8)!
+            hash = RIPEMD160.hash(message: keyToHash)
         } else {
             throw EosioError(.signatureProviderError, reason: "\(eosioPrivateKey) is not valid key")
         }
