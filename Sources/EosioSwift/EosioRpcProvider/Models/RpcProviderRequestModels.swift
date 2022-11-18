@@ -19,6 +19,23 @@ public struct EosioAccountInfo: Codable {
 
 /* Chain Endpoints */
 
+/// The request struct for `get_activated_protocol_features` RPC requests.
+public struct EosioRpcActivatedProtocolFeaturesRequest: Codable {
+    public let lowerBound: String?
+    public let upperBound: String?
+    public let limit: Int32?
+    public let searchByBlockNum: Bool? 
+    public let reverse: Bool?
+
+    public init(lowerBound: String? = nil, upperBound: String? = nil, limit: Int32? = nil, searchByBlockNum: Bool? = nil, reverse: Bool? = nil) {
+        self.lowerBound = lowerBound
+        self.upperBound = upperBound
+        self.limit = limit
+        self.searchByBlockNum = searchByBlockNum
+        self.reverse = reverse
+    }
+}
+
 /// The request struct for `get_account` RPC requests.
 public typealias EosioRpcAccountRequest = EosioAccountInfo
 

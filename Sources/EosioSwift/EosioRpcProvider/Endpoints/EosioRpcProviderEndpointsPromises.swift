@@ -14,6 +14,16 @@ extension EosioRpcProvider {
 
     /* Chain Endpoints */
 
+    /// Call `chain/get_activated_protocol_features` and get a Promise back. Retreives the activated protocol features for producer node.
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcActivatedProtocolFeaturesRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcActivatedProtocolFeaturesResponse` or rejected with an `EosioError`.
+    public func getActivatedProtocolFeatures(_: PMKNamespacer, requestParameters: EosioRpcActivatedProtocolFeaturesRequest) -> Promise<EosioRpcActivatedProtocolFeaturesResponse> {
+        return Promise { getActivatedProtocolFeatures(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
     /// Call `chain/get_account` and get a Promise back. Fetch an account by account name.
     ///
     /// - Parameters:
