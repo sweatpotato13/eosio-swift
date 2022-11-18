@@ -401,6 +401,22 @@ public struct Permission: Decodable {
     }
 }
 
+/// Response type for the `get_activated_protocol_features` RPC endpoint.
+public struct EosioRpcActivatedProtocolFeaturesResponse: Decodable, EosioRpcResponseProtocol {
+    public var activatedProtocolFeatures = [String]()
+    public var more: String
+
+    enum CustomCodingKeys: String, CodingKey {
+        case activatedProtocolFeatures = "activated_protocol_features"
+        case more
+    }
+
+    public init(from decoder: Decoder) throws {
+        activatedProtocolFeatures = try container.decode(String.self, forKey: .activatedProtocolFeatures)
+        more = try container.decodeIfPresent(String.self, forKey: .more) ?? ""
+    }
+}
+
 /// Response type for the `get_account` RPC endpoint.
 public struct EosioRpcAccountResponse: Decodable, EosioRpcResponseProtocol {
     public var _rawResponse: Any?

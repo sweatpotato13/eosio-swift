@@ -1,16 +1,19 @@
-//
-//  EosioRpcProviderEndpointsCallbacks.swift
-//  EosioSwift
-//
-//  Created by Brandon Fancher on 4/22/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Endpoint methods taking callbacks
 extension EosioRpcProvider {
     /* Chain Endpoints */
+
+    /// Call `chain/get_activated_protocol_features`. Retreives the activated protocol features for producer node.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcActivatedProtocolFeaturesRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcActivatedProtocolFeaturesResponse` and an optional `EosioError`.
+    public func getActivatedProtocolFeatures(requestParameters: EosioRpcActivatedProtocolFeaturesRequest, completion:@escaping (EosioResult<EosioRpcActivatedProtocolFeaturesResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_activated_protocol_features", requestParameters: requestParameters) {(result: EosioRpcActivatedProtocolFeaturesResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
 
     /// Call `chain/get_account`. Fetch an account by account name.
     ///

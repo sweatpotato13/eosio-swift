@@ -14,6 +14,17 @@ import Foundation
 extension EosioRpcProvider {
     /* Chain Endpoints */
 
+    /// Call `chain/get_activated_protocol_features` and get a Publisher back. Retreives the activated protocol features for producer node.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcActivatedProtocolFeaturesRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcActivatedProtocolFeaturesResponse` or rejected with an `EosioError`.
+    public func getActivatedProtocolFeaturesPublisher(requestParameters: EosioRpcAccountRequest) -> AnyPublisher<EosioRpcActivatedProtocolFeaturesResponse, EosioError> {
+        return Future<EosioRpcActivatedProtocolFeaturesResponse, EosioError> { [weak self] promise in
+            self?.getActivatedProtocolFeatures(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
     /// Call `chain/get_account` and get a Publisher back. Fetch an account by account name.
     ///
     /// - Parameters:
