@@ -4,6 +4,28 @@ import Foundation
 extension EosioRpcProvider {
     /* Chain Endpoints */
 
+    /// Call `chain/abi_bin_to_json`. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAbiBinToJsonRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcAbiBinToJsonResponse` and an optional `EosioError`.
+    public func AbiBinToJson(requestParameters: EosioRpcAbiBinToJsonRequest, completion:@escaping (EosioResult<EosioRpcAbiBinToJsonResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/abi_bin_to_json", requestParameters: requestParameters) {(result: EosioRpcAbiBinToJsonResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
+    /// Call `chain/abi_json_to_bin`. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAbiJsonToBinRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcAbiJsonToBinResponse` and an optional `EosioError`.
+    public func AbiJsonToBin(requestParameters: EosioRpcAbiJsonToBinRequest, completion:@escaping (EosioResult<EosioRpcAbiJsonToBinResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/abi_json_to_bin", requestParameters: requestParameters) {(result: EosioRpcAbiJsonToBinResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
     /// Call `chain/get_activated_protocol_features`. Retreives the activated protocol features for producer node.
     ///
     /// - Parameters:

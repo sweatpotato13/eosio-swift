@@ -1,11 +1,3 @@
-//
-//  RequestModels.swift
-//  EosioSwift
-//
-//  Created by Farid Rahmani on 4/10/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
 
 /// Base request struct aliased by request types for `get_account`, `get_abi`, `get_raw_code_and_abi`, and `get_code` requests.
@@ -18,6 +10,32 @@ public struct EosioAccountInfo: Codable {
 }
 
 /* Chain Endpoints */
+
+/// The request struct for `abi_bin_to_json` RPC requests.
+public struct EosioRpcAbiBinToJsonRequest: Codable {
+    public let code: String?
+    public let action: String?
+    public let binargs: String?
+
+    public init(code: String? = nil, action: String? = nil, binargs: String? = nil) {
+        self.code = code
+        self.action = action
+        self.binargs = binargs
+    }
+}
+
+/// The request struct for `abi_json_to_bin` RPC requests.
+public struct EosioRpcAbiJsonToBinRequest: Codable {
+    public let code: String?
+    public let action: String?
+    public var args = [String]()
+
+    public init(code: String? = nil, action: String? = nil, args: [String] = []) {
+        self.code = code
+        self.action = action
+        self.args = args
+    }
+}
 
 /// The request struct for `get_activated_protocol_features` RPC requests.
 public struct EosioRpcActivatedProtocolFeaturesRequest: Codable {

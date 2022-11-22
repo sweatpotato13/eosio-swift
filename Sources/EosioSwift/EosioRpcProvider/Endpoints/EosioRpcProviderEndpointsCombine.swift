@@ -1,10 +1,3 @@
-//
-//  EosioRpcProviderEndpointsCombine.swift
-//  EosioSwift
-//  Created by Mark Johnson on 5/4/20
-//  Copyright (c) 2017-2020 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
 #if canImport(Combine)
   import Combine
@@ -14,12 +7,34 @@ import Foundation
 extension EosioRpcProvider {
     /* Chain Endpoints */
 
+    /// Call `chain/abi_bin_to_json` and get a Publisher back. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAbiBinToJsonRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcAbiBinToJsonResponse` or rejected with an `EosioError`.
+    public func AbiBinToJsonPublisher(requestParameters: EosioRpcAbiBinToJsonRequest) -> AnyPublisher<EosioRpcAbiBinToJsonResponse, EosioError> {
+        return Future<EosioRpcAbiBinToJsonResponse, EosioError> { [weak self] promise in
+            self?.AbiBinToJson(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
+    /// Call `chain/abi_json_to_bin` and get a Publisher back. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAbiJsonToBinRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcAbiJsonToBinResponse` or rejected with an `EosioError`.
+    public func AbiJsonToBinPublisher(requestParameters: EosioRpcAbiJsonToBinRequest) -> AnyPublisher<EosioRpcAbiJsonToBinResponse, EosioError> {
+        return Future<EosioRpcAbiJsonToBinResponse, EosioError> { [weak self] promise in
+            self?.AbiJsonToBin(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
     /// Call `chain/get_activated_protocol_features` and get a Publisher back. Retreives the activated protocol features for producer node.
     ///
     /// - Parameters:
     ///   - requestParameters: An `EosioRpcActivatedProtocolFeaturesRequest`.
     /// - Returns: A Publisher fulfilled with an `EosioRpcActivatedProtocolFeaturesResponse` or rejected with an `EosioError`.
-    public func getActivatedProtocolFeaturesPublisher(requestParameters: EosioRpcAccountRequest) -> AnyPublisher<EosioRpcActivatedProtocolFeaturesResponse, EosioError> {
+    public func getActivatedProtocolFeaturesPublisher(requestParameters: EosioRpcActivatedProtocolFeaturesRequest) -> AnyPublisher<EosioRpcActivatedProtocolFeaturesResponse, EosioError> {
         return Future<EosioRpcActivatedProtocolFeaturesResponse, EosioError> { [weak self] promise in
             self?.getActivatedProtocolFeatures(requestParameters: requestParameters, completion: { promise($0.asResult) })
         }.eraseToAnyPublisher()
