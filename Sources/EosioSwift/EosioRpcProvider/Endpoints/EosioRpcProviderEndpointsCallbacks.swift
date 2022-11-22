@@ -143,6 +143,17 @@ extension EosioRpcProvider {
         }
     }
 
+    /// Call `chain/send_transaction2`. Send a transaction to the blockchain!
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcSendTransaction2Request`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcTransactionResponse` and an optional `EosioError`.
+    public func sendTransaction2(requestParameters: EosioRpcSendTransaction2Request, completion: @escaping (EosioResult<EosioRpcTransactionResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/send_transaction2", requestParameters: requestParameters) {(result: EosioRpcTransactionResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
     /// Call `chain/get_block_header_state`.
     ///
     /// - Parameters:

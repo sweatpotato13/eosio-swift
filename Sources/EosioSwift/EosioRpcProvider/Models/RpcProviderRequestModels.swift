@@ -393,3 +393,29 @@ public struct EosioRpcSendTransactionRequest: Codable {
         self.packedTrx = packedTrx
     }
 }
+
+/// The request struct for `send_transaction2` RPC requests.
+public struct EosioRpcSendTransaction2Request: Codable {
+    public var return_failure_trace: Bool
+    public var retry_trx: Bool
+    public var retry_trx_num_blocks = 0
+    /// Array of signatures as Strings.
+    public var signatures = [String]()
+    /// Compression
+    public var compression = 0
+    /// Context free data, packed.
+    public var packedContextFreeData = ""
+    /// The serialized transaction as a hex String.
+    public var packedTrx = ""
+
+    /// Initialize an `EosioRpcSendTransaction2Request`.
+    public init(return_failure_trace: Bool = true, retry_trx: Bool = false, retry_trx_num_blocks: Int = 0, signatures: [String] = [], compression: Int = 0, packedContextFreeData: String = "", packedTrx: String = "") {
+        self.return_failure_trace = return_failure_trace
+        self.retry_trx = retry_trx
+        self.retry_trx_num_blocks = retry_trx_num_blocks
+        self.signatures = signatures
+        self.compression = compression
+        self.packedContextFreeData = packedContextFreeData
+        self.packedTrx = packedTrx
+    }
+}
