@@ -254,6 +254,16 @@ extension EosioRpcProvider {
         return Promise { getCode(accountName: accountName, completion: $0.resolve) }
     }
 
+    /// Call `chain/get_code_hash` and get a Promise back.
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcCodeHashRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcCodeHashResponse` or rejected with an `EosioError`.
+    public func getCodeHash(_: PMKNamespacer, requestParameters: EosioRpcCodeHashRequest) -> Promise<EosioRpcCodeHashResponse> {
+        return Promise { getCodeHash(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
     /// Call `chain/get_raw_abi` and get a Promise back. Get a raw abi.
     ///
     /// - Parameters:

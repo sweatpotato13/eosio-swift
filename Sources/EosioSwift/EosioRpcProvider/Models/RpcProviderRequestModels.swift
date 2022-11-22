@@ -319,6 +319,9 @@ public struct EosioRpcCodeRequest: Codable {
     }
 }
 
+/// The request type for `get_code_hash` RPC requests.
+public typealias EosioRpcCodeHashRequest = EosioAccountInfo
+
 /* History Endpoints */
 
 /// The request struct for `get_actions` RPC requests.

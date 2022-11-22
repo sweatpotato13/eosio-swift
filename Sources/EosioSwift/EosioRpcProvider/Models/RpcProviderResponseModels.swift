@@ -727,6 +727,27 @@ public struct EosioRpcCodeResponse: Decodable, EosioRpcResponseProtocol {
 
 }
 
+/// Response type for the `get_code_hash` RPC endpoint.
+public struct EosioRpcCodeHashResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var accountName: String
+    public var codeHash: String
+
+    enum CustomCodingKeys: String, CodingKey {
+        case accountName = "account_name"
+        case codeHash = "code_hash"
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CustomCodingKeys.self)
+
+        accountName = try container.decode(String.self, forKey: .accountName)
+        codeHash = try container.decode(String.self, forKey: .codeHash)
+    }
+
+}
+
 /// Response type for the `get_abi` RPC endpoint.
 public struct EosioRpcAbiResponse: Decodable, EosioRpcResponseProtocol {
     public var _rawResponse: Any?

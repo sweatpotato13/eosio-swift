@@ -277,6 +277,17 @@ extension EosioRpcProvider {
         }
     }
 
+    /// Call `chain/get_code_hash`.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcCodeHashRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcCodeHashResponse` and an optional `EosioError`.
+    public func getCodeHash(requestParameters: EosioRpcCodeHashRequest, completion:@escaping (EosioResult<EosioRpcCodeHashResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_code_hash", requestParameters: requestParameters) {(result: EosioRpcCodeHashResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
     /// Call `chain/get_raw_abi`. Get a raw abi.
     ///
     /// - Parameters:
