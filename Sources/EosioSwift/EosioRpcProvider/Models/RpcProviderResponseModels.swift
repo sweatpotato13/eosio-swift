@@ -393,11 +393,52 @@ public struct Permission: Decodable {
     }
 }
 
+/// Response struct for the rows returned in the `get_accounts_by_authorizers` RPC endpoint response.
+public struct Authorization: Decodable {
+    public var actor: String
+    public var permission: String
+
+    enum CustomCodingKeys: String, CodingKey {
+        case actor
+        case permission
+    }
+}
+
+/// Response struct for the rows returned in the `get_accounts_by_authorizers` RPC endpoint response.
+public struct AccountResult: Decodable {
+    public var accountName: String
+    public var permissionName: String
+    public var authorizingAccount: [Authorization]?
+    public var authorizingKey: String?
+    public var weight: EosioUInt64
+    public var threshold: EosioUInt64
+
+    enum CustomCodingKeys: String, CodingKey {
+        case accountName = "account_name"
+        case permissionName = "permission_name"
+        case authorizingAccount = "authorizing_account"
+        case authorizingKey = "authorizing_key"
+        case weight
+        case threshold
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CustomCodingKeys.self)
+
+        accountName = try container.decode(String.self, forKey: .accountName)
+        permissionName = try container.decode(String.self, forKey: .permissionName)
+        authorizingAccount = try container.decodeIfPresent([Authorization].self, forKey: .authorizingAccount) ?? [Authorization]()
+        authorizingKey = try container.decodeIfPresent(String.self, forKey: .authorizingKey) ?? ""
+        weight = try container.decode(EosioUInt64.self, forKey: .weight)
+        threshold = try container.decode(EosioUInt64.self, forKey: .threshold)
+    }
+}
+
 /// Response type for the `abi_bin_to_json` RPC endpoint.
 public struct EosioRpcAbiBinToJsonResponse: Decodable, EosioRpcResponseProtocol {
     public var _rawResponse: Any?
 
-    public var args: String
+    public var args: [Any] = [Any]()
 
     enum CodingKeys: String, CodingKey {
         case args
@@ -406,7 +447,8 @@ public struct EosioRpcAbiBinToJsonResponse: Decodable, EosioRpcResponseProtocol 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        args = try container.decode(String.self, forKey: .args)
+        var argsContainer = try? container.nestedUnkeyedContainer(forKey: .args)
+        args = argsContainer?.decodeDynamicValues() ?? [Any]()
     }
 }
 
@@ -424,6 +466,23 @@ public struct EosioRpcAbiJsonToBinResponse: Decodable, EosioRpcResponseProtocol 
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         binargs = try container.decode(String.self, forKey: .binargs)
+    }
+}
+
+/// Response type for the `get_accounts_by_authorizers` RPC endpoint.
+public struct EosioRpcAccountByAuthorizersResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var accounts = [AccountResult]()
+
+    enum CodingKeys: String, CodingKey {
+        case accounts
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        accounts = try container.decode([AccountResult].self, forKey: .accounts)
     }
 }
 

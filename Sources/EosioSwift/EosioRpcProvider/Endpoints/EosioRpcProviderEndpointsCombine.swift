@@ -29,6 +29,17 @@ extension EosioRpcProvider {
         }.eraseToAnyPublisher()
     }
 
+    /// Call `chain/get_accounts_by_authorizers` and get a Publisher back. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAccountByAuthorizersRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcAccountByAuthorizersResponse` or rejected with an `EosioError`.
+    public func getAccountByAuthorizersPublisher(requestParameters: EosioRpcAccountByAuthorizersRequest) -> AnyPublisher<EosioRpcAccountByAuthorizersResponse, EosioError> {
+        return Future<EosioRpcAccountByAuthorizersResponse, EosioError> { [weak self] promise in
+            self?.getAccountByAuthorizers(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
     /// Call `chain/get_activated_protocol_features` and get a Publisher back. Retreives the activated protocol features for producer node.
     ///
     /// - Parameters:

@@ -1,5 +1,16 @@
 import Foundation
 
+/// Base request struct aliased by request types for `get_accounts_by_authorizers` requests.
+public struct EosioAuthorization: Codable {
+    public let actor: String
+    public let permission: String
+
+    public init(actor: String, permission: String) {
+        self.actor = actor
+        self.permission = permission
+    }
+}
+
 /// Base request struct aliased by request types for `get_account`, `get_abi`, `get_raw_code_and_abi`, and `get_code` requests.
 public struct EosioAccountInfo: Codable {
     public let accountName: String
@@ -34,6 +45,17 @@ public struct EosioRpcAbiJsonToBinRequest: Codable {
         self.code = code
         self.action = action
         self.args = args
+    }
+}
+
+/// The request struct for `get_accounts_by_authorizers` RPC requests.
+public struct EosioRpcAccountByAuthorizersRequest: Codable {
+    public var accounts = [EosioAuthorization]()
+    public var keys = [String]()
+
+    public init(accounts: [EosioAuthorization] = [], keys: [String] = []) {
+        self.accounts = accounts
+        self.keys = keys
     }
 }
 

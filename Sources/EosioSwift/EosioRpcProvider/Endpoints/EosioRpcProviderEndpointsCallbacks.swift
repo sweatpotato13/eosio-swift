@@ -26,6 +26,17 @@ extension EosioRpcProvider {
         }
     }
 
+    /// Call `chain/get_accounts_by_authorizers`. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAccountByAuthorizersRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcAccountByAuthorizersResponse` and an optional `EosioError`.
+    public func getAccountByAuthorizers(requestParameters: EosioRpcAccountByAuthorizersRequest, completion:@escaping (EosioResult<EosioRpcAccountByAuthorizersResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_accounts_by_authorizers", requestParameters: requestParameters) {(result: EosioRpcAccountByAuthorizersResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
     /// Call `chain/get_activated_protocol_features`. Retreives the activated protocol features for producer node.
     ///
     /// - Parameters:

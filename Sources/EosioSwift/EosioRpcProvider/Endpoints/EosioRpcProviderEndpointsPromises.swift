@@ -26,6 +26,16 @@ extension EosioRpcProvider {
         return Promise { AbiJsonToBin(requestParameters: requestParameters, completion: $0.resolve) }
     }
 
+    /// Call `chain/get_accounts_by_authorizers` and get a Promise back. 
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcAccountByAuthorizersRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcAccountByAuthorizersResponse` or rejected with an `EosioError`.
+    public func getAccountByAuthorizers(_: PMKNamespacer, requestParameters: EosioRpcAccountByAuthorizersRequest) -> Promise<EosioRpcAccountByAuthorizersResponse> {
+        return Promise { getAccountByAuthorizers(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
     /// Call `chain/get_activated_protocol_features` and get a Promise back. Retreives the activated protocol features for producer node.
     ///
     /// - Parameters:
