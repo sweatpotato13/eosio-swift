@@ -280,6 +280,17 @@ extension EosioRpcProvider {
         }.eraseToAnyPublisher()
     }
 
+    /// Call `chain/get_code_hash` and get a Publisher back.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcCodeHashRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcCodeHashResponse` or rejected with an `EosioError`.
+    public func getCodeHashPublisher(requestParameters: EosioRpcCodeHashRequest) -> AnyPublisher<EosioRpcCodeHashResponse, EosioError> {
+        return Future<EosioRpcCodeHashResponse, EosioError> { [weak self] promise in
+            self?.getCodeHash(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
     /// Call `chain/get_raw_abi` and get a Publisher back. Get a raw abi.
     ///
     /// - Parameters:
