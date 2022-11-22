@@ -93,6 +93,15 @@ extension EosioRpcProvider {
         }.eraseToAnyPublisher()
     }
 
+    /// Call `chain/get_producer_schedule` and get a Publisher back. 
+    ///
+    /// - Returns: A Publisher fulfilled with an `EosioRpcProducerScheduleResponse` or rejected with an `EosioError`.
+    public func getProducerSchedulePublisher() -> AnyPublisher<EosioRpcProducerScheduleResponse, EosioError> {
+        return Future<EosioRpcProducerScheduleResponse, EosioError> { [weak self] promise in
+            self?.getProducerSchedule(completion: { promise($0.asResult) } as ((EosioResult<EosioRpcProducerScheduleResponse, EosioError>) -> Void))
+        }.eraseToAnyPublisher()
+    }
+
     /// Call `chain/push_transaction` and get a Publisher back. Push a transaction to the blockchain!
     ///
     /// - Parameters:

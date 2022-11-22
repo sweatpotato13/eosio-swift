@@ -90,6 +90,15 @@ extension EosioRpcProvider {
         }
     }
 
+    /// Call `chain/get_producer_schedule`. 
+    ///
+    /// - Parameter completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcProducerScheduleResponse` and an optional `EosioError`.
+    public func getProducerSchedule(completion: @escaping (EosioResult<EosioRpcProducerScheduleResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_producer_schedule", requestParameters: nil) {(result: EosioRpcProducerScheduleResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+    
     /// Call `chain/push_transaction`. Push a transaction to the blockchain!
     ///
     /// - Parameters:

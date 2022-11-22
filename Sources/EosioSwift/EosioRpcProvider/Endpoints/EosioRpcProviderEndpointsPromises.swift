@@ -84,6 +84,14 @@ extension EosioRpcProvider {
         return Promise { getInfo(completion: $0.resolve) }
     }
 
+    /// Call `chain/get_producer_schedule` and get a Promise back. 
+    ///
+    /// - Parameter _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    /// - Returns: A Promise fulfilled with an `EosioRpcInfoResponse` or rejected with an `EosioError`.
+    public func getProducerSchedule(_: PMKNamespacer) -> Promise<EosioRpcProducerScheduleResponse> {
+        return Promise { getProducerSchedule(completion: $0.resolve) }
+    }
+
     /// Call `chain/push_transaction` and get a Promise back. Push a transaction to the blockchain!
     ///
     /// - Parameters:

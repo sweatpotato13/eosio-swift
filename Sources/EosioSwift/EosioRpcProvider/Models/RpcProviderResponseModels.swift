@@ -826,6 +826,32 @@ public struct EosioRpcProducersResponse: Decodable, EosioRpcResponseProtocol {
     }
 }
 
+/// Response type for the `get_producer_schedule` RPC endpoint.
+public struct EosioRpcProducerScheduleResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var active: [String: Any]?
+    public var pending: [String: Any]?
+    public var proposed: [String: Any]?
+
+    enum CustomCodingKeys: String, CodingKey {
+        case active
+        case pending
+        case proposed
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CustomCodingKeys.self)
+
+        let activeContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .active)
+        active = activeContainer?.decodeDynamicKeyValues() ?? [String: Any]()
+        let pendingContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .pending)
+        pending = pendingContainer?.decodeDynamicKeyValues() ?? [String: Any]()
+        let proposedContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .proposed)
+        proposed = proposedContainer?.decodeDynamicKeyValues() ?? [String: Any]()
+    }
+}
+
 /// Response type for the `push_transactions` RPC endpoint.
 public struct EosioRpcPushTransactionsResponse: Decodable, EosioRpcResponseProtocol {
     public var _rawResponse: Any?
