@@ -1,11 +1,3 @@
-//
-//  ResponseModels.swift
-//  EosioSwift
-//
-//  Created by Steve McCoole on 2/21/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
 
 /// Response struct for the `get_info` RPC endpoint.
@@ -401,18 +393,56 @@ public struct Permission: Decodable {
     }
 }
 
+/// Response type for the `abi_bin_to_json` RPC endpoint.
+public struct EosioRpcAbiBinToJsonResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var args: String
+
+    enum CodingKeys: String, CodingKey {
+        case args
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        args = try container.decode(String.self, forKey: .args)
+    }
+}
+
+/// Response type for the `abi_json_to_bin` RPC endpoint.
+public struct EosioRpcAbiJsonToBinResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var binargs: String
+
+    enum CodingKeys: String, CodingKey {
+        case binargs
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        binargs = try container.decode(String.self, forKey: .binargs)
+    }
+}
+
 /// Response type for the `get_activated_protocol_features` RPC endpoint.
 public struct EosioRpcActivatedProtocolFeaturesResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
     public var activatedProtocolFeatures = [String]()
     public var more: String
 
-    enum CustomCodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case activatedProtocolFeatures = "activated_protocol_features"
         case more
     }
 
     public init(from decoder: Decoder) throws {
-        activatedProtocolFeatures = try container.decode(String.self, forKey: .activatedProtocolFeatures)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        activatedProtocolFeatures = try container.decode([String].self, forKey: .activatedProtocolFeatures)
         more = try container.decodeIfPresent(String.self, forKey: .more) ?? ""
     }
 }

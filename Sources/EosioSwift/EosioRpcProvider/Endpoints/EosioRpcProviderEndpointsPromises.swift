@@ -1,11 +1,3 @@
-//
-//  EosioRpcProviderEndpointsPromises.swift
-//  EosioSwift
-//
-//  Created by Brandon Fancher on 4/18/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
 import PromiseKit
 
@@ -13,6 +5,26 @@ import PromiseKit
 extension EosioRpcProvider {
 
     /* Chain Endpoints */
+
+    /// Call `chain/abi_bin_to_json` and get a Promise back. 
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcAbiBinToJsonRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcAbiBinToJsonResponse` or rejected with an `EosioError`.
+    public func AbiBinToJson(_: PMKNamespacer, requestParameters: EosioRpcAbiBinToJsonRequest) -> Promise<EosioRpcAbiBinToJsonResponse> {
+        return Promise { AbiBinToJson(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
+    /// Call `chain/abi_json_to_bin` and get a Promise back. 
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcAbiJsonToBinRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcAbiJsonToBinResponse` or rejected with an `EosioError`.
+    public func AbiJsonToBin(_: PMKNamespacer, requestParameters: EosioRpcAbiJsonToBinRequest) -> Promise<EosioRpcAbiJsonToBinResponse> {
+        return Promise { AbiJsonToBin(requestParameters: requestParameters, completion: $0.resolve) }
+    }
 
     /// Call `chain/get_activated_protocol_features` and get a Promise back. Retreives the activated protocol features for producer node.
     ///
