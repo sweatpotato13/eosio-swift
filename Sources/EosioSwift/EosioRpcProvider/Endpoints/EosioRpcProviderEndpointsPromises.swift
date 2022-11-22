@@ -132,6 +132,16 @@ extension EosioRpcProvider {
         return Promise { sendTransactions(requestParameters: requestParameters, completion: $0.resolve) }
     }
 
+    /// Call `chain/send_transaction2` and get a Promise back. Send a transaction to the blockchain!
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcSendTransaction2Request`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcTransactionResponse` or rejected with an `EosioError`.
+    public func sendTransaction2(_: PMKNamespacer, requestParameters: EosioRpcSendTransaction2Request) -> Promise<EosioRpcTransactionResponse> {
+        return Promise { sendTransaction2(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
     /// Call `chain/get_block_header_state` and get a Promise back.
     ///
     /// - Parameters:

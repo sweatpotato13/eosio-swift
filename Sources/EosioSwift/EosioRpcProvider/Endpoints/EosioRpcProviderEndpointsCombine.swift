@@ -146,6 +146,17 @@ extension EosioRpcProvider {
         }.eraseToAnyPublisher()
     }
 
+    /// Call `chain/send_transaction2` and get a Publisher back. Send a transaction to the blockchain!
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcSendTransaction2Request`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcTransactionResponse` or rejected with an `EosioError`.
+    public func sendTransaction2Publisher(requestParameters: EosioRpcSendTransaction2Request) -> AnyPublisher<EosioRpcTransactionResponse, EosioError> {
+        return Future<EosioRpcTransactionResponse, EosioError> { [weak self] promise in
+            self?.sendTransaction2(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
     /// Call `chain/get_block_header_state` and get a Publisher back.
     ///
     /// - Parameters:
