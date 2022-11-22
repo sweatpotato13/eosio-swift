@@ -996,6 +996,27 @@ public struct EosioRpcBlockHeaderStateResponse: Decodable, EosioRpcResponseProto
 
 }
 
+/// Response type for the `get_scheduled_transactions` RPC endpoint.
+public struct EosioRpcScheduledTransactionsResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var transactions: [String: Any]
+    public var more: String
+
+    enum CodingKeys: String, CodingKey {
+        case transactions
+        case more
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let transactionsContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .transactions)
+        transactions = transactionsContainer?.decodeDynamicKeyValues() ?? [String: Any]()
+        more = try container.decode(String.self, forKey: .more)
+    }
+}
+
 /* History Endpoints */
 /// Response type for the `get_actions` RPC endpoint.
 public struct EosioRpcActionsResponse: Decodable, EosioRpcResponseProtocol {

@@ -282,6 +282,16 @@ extension EosioRpcProvider {
         return Promise { getRawAbi(requestParameters: requestParameters, completion: $0.resolve) }
     }
 
+    /// Call `chain/get_scheduled_transactions` and get a Promise back. Get a raw abi.
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcScheduledTransactionsRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcScheduledTransactionsResponse` or rejected with an `EosioError`.
+    public func getScheduledTransactions(_: PMKNamespacer, requestParameters: EosioRpcScheduledTransactionsRequest) -> Promise<EosioRpcScheduledTransactionsResponse> {
+        return Promise { getScheduledTransactions(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
     /* History Endpoints */
 
     /// Call `history/get_actions` and get a Promise back.
