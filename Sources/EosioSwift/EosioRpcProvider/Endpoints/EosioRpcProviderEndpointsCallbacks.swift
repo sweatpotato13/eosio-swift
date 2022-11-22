@@ -308,6 +308,17 @@ extension EosioRpcProvider {
         }
     }
 
+    /// Call `chain/get_scheduled_transactions`.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcScheduledTransactionsRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcScheduledTransactionsResponse` and an optional `EosioError`.
+    public func getScheduledTransactions(requestParameters: EosioRpcScheduledTransactionsRequest, completion:@escaping (EosioResult<EosioRpcScheduledTransactionsResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_scheduled_transactions", requestParameters: requestParameters) {(result: EosioRpcScheduledTransactionsResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
     /* History Endpoints */
 
     /// Call `history/get_actions`.

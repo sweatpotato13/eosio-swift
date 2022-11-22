@@ -311,6 +311,17 @@ extension EosioRpcProvider {
         }.eraseToAnyPublisher()
     }
 
+    /// Call `chain/get_scheduled_transactions` and get a Publisher back.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcScheduledTransactionsRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcScheduledTransactionsResponse` or rejected with an `EosioError`.
+    public func getScheduledTransactionsPublisher(requestParameters: EosioRpcScheduledTransactionsRequest) -> AnyPublisher<EosioRpcScheduledTransactionsResponse, EosioError> {
+        return Future<EosioRpcScheduledTransactionsResponse, EosioError> { [weak self] promise in
+            self?.getScheduledTransactions(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
     /* History Endpoints */
 
     /// Call `history/get_actions` and get a Publisher back.
