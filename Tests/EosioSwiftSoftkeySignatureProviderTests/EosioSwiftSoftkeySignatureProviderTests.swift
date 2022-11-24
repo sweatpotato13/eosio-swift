@@ -20,7 +20,7 @@ class EosioSwiftSoftkeySignatureProviderTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-    let privateKeyString = "PVT_K1_5KVdxcnxCmcfAd5Vod3FBuHoXDjwgdSiQRzEow8qXsMZNEX8h9a"
+    let privateKeyString = "PVT_K1_2gMNwLs8K3fuchDmRbM6rYgJcv2UVadgcvTam66HzVvCh7wMJq"
     let publicKeyString = "PUB_K1_7dRrMFULdLCgfNkeMdn94Wr19G4pHN87tDekRzbkMDKXrmQBVu"
     func test_init_withValidPrivateKeys_shouldSucceed() {
         XCTAssertNoThrow(try EosioSoftkeySignatureProvider(privateKeys: [privateKeyString]))
