@@ -1,11 +1,3 @@
-//
-//  RpcProviderEndpointPromiseTests.swift
-//  EosioSwiftTests
-//
-//  Created by Brandon Fancher on 4/18/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import XCTest
 import PromiseKit
 import OHHTTPStubs
@@ -27,6 +19,134 @@ class RpcProviderEndpointPromiseTests: XCTestCase {
         super.tearDown()
         //remove all stubs on tear down
         HTTPStubs.removeAllStubs()
+    }
+
+    /// Test abiJsonToBin promise implementation.
+    func testAbiJsonToBin(unhappy: Bool = false) {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath, unhappy: unhappy )
+            callCount += 1
+            return retVal
+        }).name = "abiJsonToBin stub"
+        let expect = expectation(description: "testAbiJsonToBin")
+        let requestParameters = EosioRpcAbiJsonToBinRequest(code: "eosio.token", action: "transfer", args: ["{}"])
+
+        firstly {
+            (rpcProvider?.abiJsonToBin(.promise, requestParameters: requestParameters))!
+        }.done {
+            if unhappy {
+                XCTFail("testAbiJsonToBin unhappy path should not fulfill promise!")
+            }
+            XCTAssertTrue($0.binargs == "0000000000ea305500000000000000a8ed32322e0000000000000004454f530000000000")
+        }.catch {
+            print($0)
+            if unhappy {
+                XCTAssertTrue($0.eosioError.errorCode == EosioErrorCode.rpcProviderError)
+            } else {
+                XCTFail("Failed abi_json_to_bin")
+            }
+        }.finally {
+            expect.fulfill()
+        }
+
+        wait(for: [expect], timeout: 30)
+    }
+
+    /// Test abiJsonToBin promise happy path.
+    func testAbiJsonToBinSuccess() {
+        testAbiJsonToBin()
+    }
+
+    /// Test abiJsonToBin promise unhappy path.
+    func testAbiJsonToBinFail() {
+        testAbiJsonToBin(unhappy: true)
+    }
+
+    /// Test abiBinToJson promise implementation.
+    func testAbiBinToJson(unhappy: Bool = false) {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath, unhappy: unhappy )
+            callCount += 1
+            return retVal
+        }).name = "abiBinToJson stub"
+        let expect = expectation(description: "testAbiBinToJson")
+        let requestParameters = EosioRpcAbiBinToJsonRequest(code: "eosio.token", action: "transfer", binargs: "0x1234567890")
+
+        firstly {
+            (rpcProvider?.abiBinToJson(.promise, requestParameters: requestParameters))!
+        }.done {
+            if unhappy {
+                XCTFail("testAbiBinToJson unhappy path should not fulfill promise!")
+            }
+            XCTAssertNotNil($0.args)
+        }.catch {
+            print($0)
+            if unhappy {
+                XCTAssertTrue($0.eosioError.errorCode == EosioErrorCode.rpcProviderError)
+            } else {
+                XCTFail("Failed abi_bin_to_json")
+            }
+        }.finally {
+            expect.fulfill()
+        }
+
+        wait(for: [expect], timeout: 30)
+    }
+
+    /// Test abiBinToJson promise happy path.
+    func testAbiBinToJsonSuccess() {
+        testAbiBinToJson()
+    }
+
+    /// Test abiBinToJson promise unhappy path.
+    func testAbiBinToJsonFail() {
+        testAbiBinToJson(unhappy: true)
+    }
+
+    /// Test getActivatedProtocolFeatures promise implementation.
+    func testGetActivatedProtocolFeatures(unhappy: Bool = false) {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath, unhappy: unhappy )
+            callCount += 1
+            return retVal
+        }).name = "getActivatedProtocolFeatures stub"
+        let expect = expectation(description: "testGetActivatedProtocolFeatures")
+        let requestParameters = EosioRpcActivatedProtocolFeaturesRequest(lowerBound:"0000", upperBound: "0001", limit: 10, searchByBlockNum: true, reverse: true)
+
+        firstly {
+            (rpcProvider?.getActivatedProtocolFeatures(.promise, requestParameters: requestParameters))!
+        }.done {
+            if unhappy {
+                XCTFail("testGetActivatedProtocolFeatures unhappy path should not fulfill promise!")
+            }
+            XCTAssertNotNil($0._rawResponse)
+            XCTAssertNotNil($0.activatedProtocolFeatures)
+            XCTAssertNotNil($0.more)
+        }.catch {
+            print($0)
+            if unhappy {
+                XCTAssertTrue($0.eosioError.errorCode == EosioErrorCode.rpcProviderError)
+            } else {
+                XCTFail("Failed get_activated_protocol_features")
+            }
+        }.finally {
+            expect.fulfill()
+        }
+
+        wait(for: [expect], timeout: 30)
+    }
+
+    /// Test getActivatedProtocolFeatures promise happy path.
+    func testGetActivatedProtocolFeaturesSuccess() {
+        testGetActivatedProtocolFeatures()
+    }
+
+    /// Test getActivatedProtocolFeatures promise unhappy path.
+    func testGetActivatedProtocolFeaturesFail() {
+        testGetActivatedProtocolFeatures(unhappy: true)
     }
 
     /// Test getInfo promise implementation.
@@ -806,6 +926,50 @@ class RpcProviderEndpointPromiseTests: XCTestCase {
         testGetCode(unhappy: true)
     }
 
+    /// Test getCodeHash() promise implementation.
+    func testGetCodeHash(unhappy: Bool = false) {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath, unhappy: unhappy)
+            callCount += 1
+            return retVal
+        }).name = "GetCodeHash stub"
+        let expect = expectation(description: "testGetCodeHash")
+        let requestParameters = EosioRpcCodeHashRequest(accountName: "eosio")
+
+        firstly {
+            (rpcProvider?.getCodeHash(.promise, requestParameters: requestParameters))!
+        }.done {
+            if unhappy {
+                XCTFail("testGetCodeHash unhappy path should not fulfill promise!")
+            }
+            XCTAssertNotNil($0._rawResponse)
+            XCTAssert($0.accountName == "eosio")
+            XCTAssert($0.codeHash == "0000000000000000000000000000000000000000000000000000000000000000")
+        }.catch {
+            print($0)
+            if unhappy {
+                XCTAssertTrue($0.eosioError.errorCode == EosioErrorCode.rpcProviderError)
+            } else {
+                XCTFail("Failed get_code_hash")
+            }
+        }.finally {
+            expect.fulfill()
+        }
+
+        wait(for: [expect], timeout: 30)
+    }
+
+    /// Test getCodeHash promise happy path.
+    func testGetCodeHashSuccess() {
+        testGetCodeHash()
+    }
+
+    /// Test getCodeHash promise unhappy path.
+    func testGetCodeHashFail() {
+        testGetCodeHash(unhappy: true)
+    }
+    
     /// Test getCode() with String signature promise implementation.
     func testGetCodeWithStringSignature(unhappy: Bool = false) {
         var callCount = 1
@@ -995,6 +1159,94 @@ class RpcProviderEndpointPromiseTests: XCTestCase {
     /// Test getProducers promise unhappy path.
     func testGetProducersFail() {
         testGetProducers(unhappy: true)
+    }
+
+    /// Test getProducerSchedule promise implementation.
+    func testGetProducerSchedule(unhappy: Bool = false) {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath, unhappy: unhappy)
+            callCount += 1
+            return retVal
+        }).name = "GetProducerSchedule stub"
+        let expect = expectation(description: "testGetProducerSchedule")
+
+        firstly {
+            (rpcProvider?.getProducerSchedule(.promise))!
+        }.done {
+            if unhappy {
+                XCTFail("testGetProducerSchedule unhappy path should not fulfill promise!")
+            }
+            XCTAssertNotNil($0._rawResponse)
+            XCTAssertNotNil($0.active)
+            XCTAssertNotNil($0.pending)
+            XCTAssertNotNil($0.proposed)
+        }.catch {
+            print($0)
+            if unhappy {
+                XCTAssertTrue($0.eosioError.errorCode == EosioErrorCode.rpcProviderError)
+            } else {
+                XCTFail("Failed get_producers")
+            }
+        }.finally {
+            expect.fulfill()
+        }
+
+        wait(for: [expect], timeout: 30)
+    }
+
+    /// Test getProducerSchedule promise happy path.
+    func testGetProducerScheduleSuccess() {
+        testGetProducerSchedule()
+    }
+
+    /// Test getProducerSchedule promise unhappy path.
+    func testGetProducerScheduleFail() {
+        testGetProducerSchedule(unhappy: true)
+    }
+
+    /// Test getScheduledTransactions promise implementation.
+    func testGetScheduledTransactions(unhappy: Bool = false) {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath, unhappy: unhappy)
+            callCount += 1
+            return retVal
+        }).name = "GetScheduledTransactions stub"
+        let expect = expectation(description: "testGetScheduledTransactions")
+        let requestParameters = EosioRpcScheduledTransactionsRequest(limit: 10, lowerBound: "blkproducer2", json: true)
+
+        firstly {
+            (rpcProvider?.getScheduledTransactions(.promise, requestParameters: requestParameters))!
+        }.done {
+            if unhappy {
+                XCTFail("testGetScheduledTransactions unhappy path should not fulfill promise!")
+            }
+            XCTAssertNotNil($0._rawResponse)
+            XCTAssertNotNil($0.transactions)
+            XCTAssertNotNil($0.more)
+        }.catch {
+            print($0)
+            if unhappy {
+                XCTAssertTrue($0.eosioError.errorCode == EosioErrorCode.rpcProviderError)
+            } else {
+                XCTFail("Failed get_producers")
+            }
+        }.finally {
+            expect.fulfill()
+        }
+
+        wait(for: [expect], timeout: 30)
+    }
+
+    /// Test getScheduledTransactions promise happy path.
+    func testGetScheduledTransactionsSuccess() {
+        testGetScheduledTransactions()
+    }
+
+    /// Test getScheduledTransactions promise unhappy path.
+    func testGetScheduledTransactionsFail() {
+        testGetScheduledTransactions(unhappy: true)
     }
 
     /// Test getActions promise implementation.

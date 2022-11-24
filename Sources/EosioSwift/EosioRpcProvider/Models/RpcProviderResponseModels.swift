@@ -1,11 +1,3 @@
-//
-//  ResponseModels.swift
-//  EosioSwift
-//
-//  Created by Steve McCoole on 2/21/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
 
 /// Response struct for the `get_info` RPC endpoint.
@@ -401,6 +393,120 @@ public struct Permission: Decodable {
     }
 }
 
+/// Response struct for the rows returned in the `get_accounts_by_authorizers` RPC endpoint response.
+public struct Authorization: Decodable {
+    public var actor: String
+    public var permission: String
+
+    enum CustomCodingKeys: String, CodingKey {
+        case actor
+        case permission
+    }
+}
+
+/// Response struct for the rows returned in the `get_accounts_by_authorizers` RPC endpoint response.
+public struct AccountResult: Decodable {
+    public var accountName: String
+    public var permissionName: String
+    public var authorizingAccount: [Authorization]?
+    public var authorizingKey: String?
+    public var weight: EosioUInt64
+    public var threshold: EosioUInt64
+
+    enum CustomCodingKeys: String, CodingKey {
+        case accountName = "account_name"
+        case permissionName = "permission_name"
+        case authorizingAccount = "authorizing_account"
+        case authorizingKey = "authorizing_key"
+        case weight
+        case threshold
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CustomCodingKeys.self)
+
+        accountName = try container.decode(String.self, forKey: .accountName)
+        permissionName = try container.decode(String.self, forKey: .permissionName)
+        authorizingAccount = try container.decodeIfPresent([Authorization].self, forKey: .authorizingAccount) ?? [Authorization]()
+        authorizingKey = try container.decodeIfPresent(String.self, forKey: .authorizingKey) ?? ""
+        weight = try container.decode(EosioUInt64.self, forKey: .weight)
+        threshold = try container.decode(EosioUInt64.self, forKey: .threshold)
+    }
+}
+
+/// Response type for the `abi_bin_to_json` RPC endpoint.
+public struct EosioRpcAbiBinToJsonResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var args: [Any] = [Any]()
+
+    enum CodingKeys: String, CodingKey {
+        case args
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        var argsContainer = try? container.nestedUnkeyedContainer(forKey: .args)
+        args = argsContainer?.decodeDynamicValues() ?? [Any]()
+    }
+}
+
+/// Response type for the `abi_json_to_bin` RPC endpoint.
+public struct EosioRpcAbiJsonToBinResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var binargs: String
+
+    enum CodingKeys: String, CodingKey {
+        case binargs
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        binargs = try container.decode(String.self, forKey: .binargs)
+    }
+}
+
+/// Response type for the `get_accounts_by_authorizers` RPC endpoint.
+public struct EosioRpcAccountByAuthorizersResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var accounts = [AccountResult]()
+
+    enum CodingKeys: String, CodingKey {
+        case accounts
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        accounts = try container.decode([AccountResult].self, forKey: .accounts)
+    }
+}
+
+/// Response type for the `get_activated_protocol_features` RPC endpoint.
+public struct EosioRpcActivatedProtocolFeaturesResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var activatedProtocolFeatures: [String: Any]
+    public var more: EosioUInt64
+
+    enum CodingKeys: String, CodingKey {
+        case activatedProtocolFeatures = "activated_protocol_features"
+        case more
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let activatedProtocolFeaturesContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .activatedProtocolFeatures)
+        activatedProtocolFeatures = activatedProtocolFeaturesContainer?.decodeDynamicKeyValues() ?? [String: Any]()
+        more = try container.decode(EosioUInt64.self, forKey: .more)
+    }
+}
+
 /// Response type for the `get_account` RPC endpoint.
 public struct EosioRpcAccountResponse: Decodable, EosioRpcResponseProtocol {
     public var _rawResponse: Any?
@@ -622,6 +728,27 @@ public struct EosioRpcCodeResponse: Decodable, EosioRpcResponseProtocol {
 
 }
 
+/// Response type for the `get_code_hash` RPC endpoint.
+public struct EosioRpcCodeHashResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var accountName: String
+    public var codeHash: String
+
+    enum CustomCodingKeys: String, CodingKey {
+        case accountName = "account_name"
+        case codeHash = "code_hash"
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CustomCodingKeys.self)
+
+        accountName = try container.decode(String.self, forKey: .accountName)
+        codeHash = try container.decode(String.self, forKey: .codeHash)
+    }
+
+}
+
 /// Response type for the `get_abi` RPC endpoint.
 public struct EosioRpcAbiResponse: Decodable, EosioRpcResponseProtocol {
     public var _rawResponse: Any?
@@ -697,6 +824,32 @@ public struct EosioRpcProducersResponse: Decodable, EosioRpcResponseProtocol {
         rows = try container.decodeIfPresent([ProducerRows].self, forKey: .rows) ?? [ProducerRows]()
         totalProducerVoteWeight = try container.decode(String.self, forKey: .totalProducerVoteWeight)
         more = try container.decodeIfPresent(String.self, forKey: .more) ?? ""
+    }
+}
+
+/// Response type for the `get_producer_schedule` RPC endpoint.
+public struct EosioRpcProducerScheduleResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var active: [String: Any]?
+    public var pending: [String: Any]?
+    public var proposed: [String: Any]?
+
+    enum CustomCodingKeys: String, CodingKey {
+        case active
+        case pending
+        case proposed
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CustomCodingKeys.self)
+
+        let activeContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .active)
+        active = activeContainer?.decodeDynamicKeyValues() ?? [String: Any]()
+        let pendingContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .pending)
+        pending = pendingContainer?.decodeDynamicKeyValues() ?? [String: Any]()
+        let proposedContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .proposed)
+        proposed = proposedContainer?.decodeDynamicKeyValues() ?? [String: Any]()
     }
 }
 
@@ -842,6 +995,27 @@ public struct EosioRpcBlockHeaderStateResponse: Decodable, EosioRpcResponseProto
         producerToLastImpliedIrb = nestedProducerToLastImply?.decodeDynamicValues() ?? [Any]()
     }
 
+}
+
+/// Response type for the `get_scheduled_transactions` RPC endpoint.
+public struct EosioRpcScheduledTransactionsResponse: Decodable, EosioRpcResponseProtocol {
+    public var _rawResponse: Any?
+
+    public var transactions: [String: Any]
+    public var more: String
+
+    enum CodingKeys: String, CodingKey {
+        case transactions
+        case more
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        let transactionsContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .transactions)
+        transactions = transactionsContainer?.decodeDynamicKeyValues() ?? [String: Any]()
+        more = try container.decode(String.self, forKey: .more)
+    }
 }
 
 /* History Endpoints */

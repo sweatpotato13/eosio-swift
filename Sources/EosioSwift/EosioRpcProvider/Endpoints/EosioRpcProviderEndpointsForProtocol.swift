@@ -74,4 +74,15 @@ extension EosioRpcProvider: EosioRpcProviderProtocol {
             completion(EosioResult(success: result, failure: error)!)
         }
     }
+
+    /// Call `chain/send_transaction2`. This method is called by `EosioTransaction`, as it only enforces the response protocol, not the entire response struct.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcSendTransaction2Request`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of a response conforming to `EosioRpcTransactionResponseProtocol` and an optional `EosioError`.
+    public func sendTransactionBase(requestParameters: EosioRpcSendTransaction2Request, completion: @escaping (EosioResult<EosioRpcTransactionResponseProtocol, EosioError>) -> Void) {
+        getResource(rpc: "chain/send_transaction2", requestParameters: requestParameters) {(result: EosioRpcTransactionResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
 }

@@ -1,16 +1,52 @@
-//
-//  EosioRpcProviderEndpointsCallbacks.swift
-//  EosioSwift
-//
-//  Created by Brandon Fancher on 4/22/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Endpoint methods taking callbacks
 extension EosioRpcProvider {
     /* Chain Endpoints */
+
+    /// Call `chain/abi_bin_to_json`. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAbiBinToJsonRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcAbiBinToJsonResponse` and an optional `EosioError`.
+    public func abiBinToJson(requestParameters: EosioRpcAbiBinToJsonRequest, completion:@escaping (EosioResult<EosioRpcAbiBinToJsonResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/abi_bin_to_json", requestParameters: requestParameters) {(result: EosioRpcAbiBinToJsonResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
+    /// Call `chain/abi_json_to_bin`. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAbiJsonToBinRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcAbiJsonToBinResponse` and an optional `EosioError`.
+    public func abiJsonToBin(requestParameters: EosioRpcAbiJsonToBinRequest, completion:@escaping (EosioResult<EosioRpcAbiJsonToBinResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/abi_json_to_bin", requestParameters: requestParameters) {(result: EosioRpcAbiJsonToBinResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
+    /// Call `chain/get_accounts_by_authorizers`. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAccountByAuthorizersRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcAccountByAuthorizersResponse` and an optional `EosioError`.
+    public func getAccountByAuthorizers(requestParameters: EosioRpcAccountByAuthorizersRequest, completion:@escaping (EosioResult<EosioRpcAccountByAuthorizersResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_accounts_by_authorizers", requestParameters: requestParameters) {(result: EosioRpcAccountByAuthorizersResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
+    /// Call `chain/get_activated_protocol_features`. Retreives the activated protocol features for producer node.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcActivatedProtocolFeaturesRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcActivatedProtocolFeaturesResponse` and an optional `EosioError`.
+    public func getActivatedProtocolFeatures(requestParameters: EosioRpcActivatedProtocolFeaturesRequest, completion:@escaping (EosioResult<EosioRpcActivatedProtocolFeaturesResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_activated_protocol_features", requestParameters: requestParameters) {(result: EosioRpcActivatedProtocolFeaturesResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
 
     /// Call `chain/get_account`. Fetch an account by account name.
     ///
@@ -54,6 +90,15 @@ extension EosioRpcProvider {
         }
     }
 
+    /// Call `chain/get_producer_schedule`. 
+    ///
+    /// - Parameter completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcProducerScheduleResponse` and an optional `EosioError`.
+    public func getProducerSchedule(completion: @escaping (EosioResult<EosioRpcProducerScheduleResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_producer_schedule", requestParameters: nil) {(result: EosioRpcProducerScheduleResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+    
     /// Call `chain/push_transaction`. Push a transaction to the blockchain!
     ///
     /// - Parameters:
@@ -94,6 +139,17 @@ extension EosioRpcProvider {
     ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcSendTransactionsResponse` and an optional `EosioError`.
     public func sendTransactions(requestParameters: EosioRpcSendTransactionsRequest, completion: @escaping (EosioResult<EosioRpcSendTransactionsResponse, EosioError>) -> Void) {
         getResource(rpc: "chain/send_transactions", requestParameters: requestParameters.transactions) {(result: EosioRpcSendTransactionsResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
+    /// Call `chain/send_transaction2`. Send a transaction to the blockchain!
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcSendTransaction2Request`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcTransactionResponse` and an optional `EosioError`.
+    public func sendTransaction2(requestParameters: EosioRpcSendTransaction2Request, completion: @escaping (EosioResult<EosioRpcTransactionResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/send_transaction2", requestParameters: requestParameters) {(result: EosioRpcTransactionResponse?, error: EosioError?) in
             completion(EosioResult(success: result, failure: error)!)
         }
     }
@@ -241,6 +297,17 @@ extension EosioRpcProvider {
         }
     }
 
+    /// Call `chain/get_code_hash`.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcCodeHashRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcCodeHashResponse` and an optional `EosioError`.
+    public func getCodeHash(requestParameters: EosioRpcCodeHashRequest, completion:@escaping (EosioResult<EosioRpcCodeHashResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_code_hash", requestParameters: requestParameters) {(result: EosioRpcCodeHashResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
     /// Call `chain/get_raw_abi`. Get a raw abi.
     ///
     /// - Parameters:
@@ -248,6 +315,17 @@ extension EosioRpcProvider {
     ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcRawAbiResponse` and an optional `EosioError`.
     public func getRawAbi(requestParameters: EosioRpcRawAbiRequest, completion: @escaping (EosioResult<EosioRpcRawAbiResponse, EosioError>) -> Void) {
         getResource(rpc: "chain/get_raw_abi", requestParameters: requestParameters) {(result: EosioRpcRawAbiResponse?, error: EosioError?) in
+            completion(EosioResult(success: result, failure: error)!)
+        }
+    }
+
+    /// Call `chain/get_scheduled_transactions`.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcScheduledTransactionsRequest`.
+    ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcScheduledTransactionsResponse` and an optional `EosioError`.
+    public func getScheduledTransactions(requestParameters: EosioRpcScheduledTransactionsRequest, completion:@escaping (EosioResult<EosioRpcScheduledTransactionsResponse, EosioError>) -> Void) {
+        getResource(rpc: "chain/get_scheduled_transactions", requestParameters: requestParameters) {(result: EosioRpcScheduledTransactionsResponse?, error: EosioError?) in
             completion(EosioResult(success: result, failure: error)!)
         }
     }

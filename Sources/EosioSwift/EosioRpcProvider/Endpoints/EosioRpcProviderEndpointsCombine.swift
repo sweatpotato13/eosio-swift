@@ -1,10 +1,3 @@
-//
-//  EosioRpcProviderEndpointsCombine.swift
-//  EosioSwift
-//  Created by Mark Johnson on 5/4/20
-//  Copyright (c) 2017-2020 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
 #if canImport(Combine)
   import Combine
@@ -13,6 +6,50 @@ import Foundation
 @available(macOS 10.15, iOS 13, watchOS 6, tvOS 13, *)
 extension EosioRpcProvider {
     /* Chain Endpoints */
+
+    /// Call `chain/abi_bin_to_json` and get a Publisher back. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAbiBinToJsonRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcAbiBinToJsonResponse` or rejected with an `EosioError`.
+    public func abiBinToJsonPublisher(requestParameters: EosioRpcAbiBinToJsonRequest) -> AnyPublisher<EosioRpcAbiBinToJsonResponse, EosioError> {
+        return Future<EosioRpcAbiBinToJsonResponse, EosioError> { [weak self] promise in
+            self?.abiBinToJson(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
+    /// Call `chain/abi_json_to_bin` and get a Publisher back. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAbiJsonToBinRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcAbiJsonToBinResponse` or rejected with an `EosioError`.
+    public func abiJsonToBinPublisher(requestParameters: EosioRpcAbiJsonToBinRequest) -> AnyPublisher<EosioRpcAbiJsonToBinResponse, EosioError> {
+        return Future<EosioRpcAbiJsonToBinResponse, EosioError> { [weak self] promise in
+            self?.abiJsonToBin(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
+    /// Call `chain/get_accounts_by_authorizers` and get a Publisher back. 
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcAccountByAuthorizersRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcAccountByAuthorizersResponse` or rejected with an `EosioError`.
+    public func getAccountByAuthorizersPublisher(requestParameters: EosioRpcAccountByAuthorizersRequest) -> AnyPublisher<EosioRpcAccountByAuthorizersResponse, EosioError> {
+        return Future<EosioRpcAccountByAuthorizersResponse, EosioError> { [weak self] promise in
+            self?.getAccountByAuthorizers(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
+    /// Call `chain/get_activated_protocol_features` and get a Publisher back. Retreives the activated protocol features for producer node.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcActivatedProtocolFeaturesRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcActivatedProtocolFeaturesResponse` or rejected with an `EosioError`.
+    public func getActivatedProtocolFeaturesPublisher(requestParameters: EosioRpcActivatedProtocolFeaturesRequest) -> AnyPublisher<EosioRpcActivatedProtocolFeaturesResponse, EosioError> {
+        return Future<EosioRpcActivatedProtocolFeaturesResponse, EosioError> { [weak self] promise in
+            self?.getActivatedProtocolFeatures(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
 
     /// Call `chain/get_account` and get a Publisher back. Fetch an account by account name.
     ///
@@ -53,6 +90,15 @@ extension EosioRpcProvider {
     public func getInfoPublisher() -> AnyPublisher<EosioRpcInfoResponse, EosioError> {
         return Future<EosioRpcInfoResponse, EosioError> { [weak self] promise in
             self?.getInfo(completion: { promise($0.asResult) } as ((EosioResult<EosioRpcInfoResponse, EosioError>) -> Void))
+        }.eraseToAnyPublisher()
+    }
+
+    /// Call `chain/get_producer_schedule` and get a Publisher back. 
+    ///
+    /// - Returns: A Publisher fulfilled with an `EosioRpcProducerScheduleResponse` or rejected with an `EosioError`.
+    public func getProducerSchedulePublisher() -> AnyPublisher<EosioRpcProducerScheduleResponse, EosioError> {
+        return Future<EosioRpcProducerScheduleResponse, EosioError> { [weak self] promise in
+            self?.getProducerSchedule(completion: { promise($0.asResult) } as ((EosioResult<EosioRpcProducerScheduleResponse, EosioError>) -> Void))
         }.eraseToAnyPublisher()
     }
 
@@ -97,6 +143,17 @@ extension EosioRpcProvider {
     public func sendTransactionsPublisher(requestParameters: EosioRpcSendTransactionsRequest) -> AnyPublisher<EosioRpcSendTransactionsResponse, EosioError> {
         return Future<EosioRpcSendTransactionsResponse, EosioError> { [weak self] promise in
             self?.sendTransactions(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
+    /// Call `chain/send_transaction2` and get a Publisher back. Send a transaction to the blockchain!
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcSendTransaction2Request`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcTransactionResponse` or rejected with an `EosioError`.
+    public func sendTransaction2Publisher(requestParameters: EosioRpcSendTransaction2Request) -> AnyPublisher<EosioRpcTransactionResponse, EosioError> {
+        return Future<EosioRpcTransactionResponse, EosioError> { [weak self] promise in
+            self?.sendTransaction2(requestParameters: requestParameters, completion: { promise($0.asResult) })
         }.eraseToAnyPublisher()
     }
 
@@ -243,6 +300,17 @@ extension EosioRpcProvider {
         }.eraseToAnyPublisher()
     }
 
+    /// Call `chain/get_code_hash` and get a Publisher back.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcCodeHashRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcCodeHashResponse` or rejected with an `EosioError`.
+    public func getCodeHashPublisher(requestParameters: EosioRpcCodeHashRequest) -> AnyPublisher<EosioRpcCodeHashResponse, EosioError> {
+        return Future<EosioRpcCodeHashResponse, EosioError> { [weak self] promise in
+            self?.getCodeHash(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
     /// Call `chain/get_raw_abi` and get a Publisher back. Get a raw abi.
     ///
     /// - Parameters:
@@ -251,6 +319,17 @@ extension EosioRpcProvider {
     public func getRawAbiPublisher(requestParameters: EosioRpcRawAbiRequest) -> AnyPublisher<EosioRpcRawAbiResponse, EosioError> {
         return Future<EosioRpcRawAbiResponse, EosioError> { [weak self] promise in
             self?.getRawAbi(requestParameters: requestParameters, completion: { promise($0.asResult) })
+        }.eraseToAnyPublisher()
+    }
+
+    /// Call `chain/get_scheduled_transactions` and get a Publisher back.
+    ///
+    /// - Parameters:
+    ///   - requestParameters: An `EosioRpcScheduledTransactionsRequest`.
+    /// - Returns: A Publisher fulfilled with an `EosioRpcScheduledTransactionsResponse` or rejected with an `EosioError`.
+    public func getScheduledTransactionsPublisher(requestParameters: EosioRpcScheduledTransactionsRequest) -> AnyPublisher<EosioRpcScheduledTransactionsResponse, EosioError> {
+        return Future<EosioRpcScheduledTransactionsResponse, EosioError> { [weak self] promise in
+            self?.getScheduledTransactions(requestParameters: requestParameters, completion: { promise($0.asResult) })
         }.eraseToAnyPublisher()
     }
 

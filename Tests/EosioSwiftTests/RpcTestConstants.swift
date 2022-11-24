@@ -51,6 +51,12 @@ public class RpcTestConstants {
             return RpcTestConstants.getInfoOHHTTPStubsResponse()
         } else if callCount == 2 {
             switch urlRelativePath {
+            case "/v1/chain/abi_json_to_bin" :
+                return getOHHTTPStubsResponseForJson(json: RpcTestConstants.abiJsonToBinResponseJson, unhappy: unhappy)
+            case "/v1/chain/abi_bin_to_json" :
+                return getOHHTTPStubsResponseForJson(json: RpcTestConstants.abiBinToJsonResponseJson, unhappy: unhappy)
+            case "/v1/chain/get_activated_protocol_features" :
+                return getOHHTTPStubsResponseForJson(json: RpcTestConstants.activedProtocolFeaturesResponseJson, unhappy: unhappy)
             case "/v1/chain/get_block" :
                 return getOHHTTPStubsResponseForJson(json: RpcTestConstants.blockResponseJson, unhappy: unhappy)
             case "/v1/chain/get_block_info" :
@@ -83,12 +89,18 @@ public class RpcTestConstants {
                 return getOHHTTPStubsResponseForJson(json: RpcTestConstants.rawCodeAndAbiJson, unhappy: unhappy)
             case "/v1/chain/get_code" :
                 return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.codeJson, unhappy: unhappy)
+            case "/v1/chain/get_code_hash" :
+                return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.codeHashJson, unhappy: unhappy)
             case "/v1/chain/get_table_rows" :
                 return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.tableRowsJson, unhappy: unhappy)
             case "/v1/chain/get_table_by_scope" :
                 return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.tableScopeJson, unhappy: unhappy)
             case "/v1/chain/get_producers" :
                 return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.producersJson, unhappy: unhappy)
+            case "/v1/chain/get_producer_schedule" :
+                return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.producerScheduleJson, unhappy: unhappy)
+            case "/v1/chain/get_scheduled_transactions" :
+                return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.scheduledTransactionsJson, unhappy: unhappy)
             case  "/v1/history/get_actions" :
                 return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.actionsJson, unhappy: unhappy)
             case "/v1/history/get_controlled_accounts" :
@@ -99,6 +111,8 @@ public class RpcTestConstants {
                 return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.keyAccountsJson, unhappy: unhappy)
             case "/v1/chain/send_transaction":
                 return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.sendTransActionResponseJson, unhappy: unhappy)
+            case "/v1/chain/send_transaction2":
+                return RpcTestConstants.getOHHTTPStubsResponseForJson(json: RpcTestConstants.sendTransAction2ResponseJson, unhappy: unhappy)
             default :
                 return RpcTestConstants.getErrorOHHTTPStubsResponse(reason: "Unexpected relative path passed to stub: \(String(describing: urlRelativePath))")
             }
@@ -113,6 +127,18 @@ public class RpcTestConstants {
 
     // swiftlint:enable cyclomatic_complexity
     // swiftlint:enable function_body_length
+    public static let abiJsonToBinResponseJson = """
+    {
+        "binargs": "0000000000ea305500000000000000a8ed32322e0000000000000004454f530000000000",
+    }
+    """
+
+    public static let abiBinToJsonResponseJson = """
+    {
+        "args":{}
+    }
+    """
+
     public static let infoResponseJson = """
     {
     "server_version": "0f6695cb",
@@ -182,6 +208,28 @@ public class RpcTestConstants {
     "block_cpu_limit": 199900,
     "block_net_limit": 1048576,
     "server_version_string": "v1.3.0"
+    }
+    """
+
+    public static let activedProtocolFeaturesResponseJson = """
+    {
+     "activated_protocol_features": [
+       {
+         "feature_digest": "0ec7e080177b2c02b278d5088611686b49d739925a92d9bfcacd7fc6b74053bd",
+         "activation_ordinal": 0,
+         "activation_block_num": 8,
+         "description_digest": "64fe7df32e9b86be2b296b3f81dfd527f84e82b98e363bc97e40bc7a83733310",
+         "dependencies": [],
+         "protocol_feature_type": "builtin",
+         "specification": [
+           {
+             "name": "builtin_feature_codename",
+             "value": "PREACTIVATE_FEATURE"
+           }
+         ]
+       }
+     ],
+     "more": 10
     }
     """
 
@@ -988,6 +1036,13 @@ public class RpcTestConstants {
     }
     """
 
+    public static let codeHashJson = """
+    {
+    "account_name": "eosio",
+    "code_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+    """
+
     //Input defaults do not produce a working request, not sure if all fields still valid.  Some requests from [eosjs/4.-Reading blockchain-Examples.md](https://github.com/EOSIO/eosjs/blob/41bb99b319c1a3b24110a52c3a6e1558df0f326a/docs/4.-Reading%20blockchain-Examples.md) tried.  Some work, some do not.  One working example:
     public static let tableRowsJson = """
     {
@@ -1104,6 +1159,40 @@ public class RpcTestConstants {
     ],
     "total_producer_vote_weight": "0.00000000000000000",
     "more": ""
+    }
+    """
+
+    public static let producerScheduleJson = """
+    {
+        "active": {
+            "version": 0,
+            "producers": [
+                {
+                    "producer_name": "eosio",
+                    "authority": [
+                        0,
+                        {
+                            "threshold": 1,
+                            "keys": [
+                                {
+                                    "key": "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
+                                    "weight": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "pending": null,
+        "proposed": null
+    }
+    """
+
+    public static let scheduledTransactionsJson = """
+    {
+        "transactions": [],
+        "more": ""
     }
     """
 
@@ -2056,6 +2145,172 @@ public class RpcTestConstants {
     """
 
     public static let sendTransActionResponseJson = """
+    {
+        "processed": {
+            "account_ram_delta": null,
+            "action_traces": [
+                {
+                    "account_ram_deltas": [],
+                    "act": {
+                        "account": "eosio.token",
+                        "authorization": [
+                            {
+                                "actor": "swdev1212121",
+                                "permission": "active"
+                            }
+                        ],
+                        "data": {
+                            "from": "swdev1212121",
+                            "memo": "",
+                            "quantity": "1.0000 EOS",
+                            "to": "paulk1111111"
+                        },
+                        "hex_data": "1044104184ad12c7104208210418b5a9102700000000000004454f530000000000",
+                        "name": "transfer"
+                    },
+                    "action_ordinal": 1,
+                    "block_num": 56110902,
+                    "block_time": "2019-10-22T15:32:46.000",
+                    "closest_unnotified_ancestor_action_ordinal": 0,
+                    "console": "",
+                    "context_free": false,
+                    "creator_action_ordinal": 0,
+                    "elapsed": 65,
+                    "error_code": null,
+                    "except": null,
+                    "producer_block_id": null,
+                    "receipt": {
+                        "abi_sequence": 4,
+                        "act_digest": "fc7afe8d172f698189449bf95d6a2a193e27759a264e21741e00872a48a5ec39",
+                        "auth_sequence": [
+                            [
+                                "swdev1212121",
+                                28
+                            ]
+                        ],
+                        "code_sequence": 5,
+                        "global_sequence": 498392582,
+                        "receiver": "eosio.token",
+                        "recv_sequence": 76627315
+                    },
+                    "receiver": "eosio.token",
+                    "trx_id": "2e611730d904777d5da89e844cac4936da0ff844ad8e3c7eccd5da912423c9e9"
+                },
+                {
+                    "account_ram_deltas": [],
+                    "act": {
+                        "account": "eosio.token",
+                        "authorization": [
+                            {
+                                "actor": "swdev1212121",
+                                "permission": "active"
+                            }
+                        ],
+                        "data": {
+                            "from": "swdev1212121",
+                            "memo": "",
+                            "quantity": "1.0000 EOS",
+                            "to": "paulk1111111"
+                        },
+                        "hex_data": "1044104184ad12c7104208210418b5a9102700000000000004454f530000000000",
+                        "name": "transfer"
+                    },
+                    "action_ordinal": 2,
+                    "block_num": 56110902,
+                    "block_time": "2019-10-22T15:32:46.000",
+                    "closest_unnotified_ancestor_action_ordinal": 1,
+                    "console": "",
+                    "context_free": false,
+                    "creator_action_ordinal": 1,
+                    "elapsed": 2,
+                    "error_code": null,
+                    "except": null,
+                    "producer_block_id": null,
+                    "receipt": {
+                        "abi_sequence": 4,
+                        "act_digest": "fc7afe8d172f698189449bf95d6a2a193e27759a264e21741e00872a48a5ec39",
+                        "auth_sequence": [
+                            [
+                                "swdev1212121",
+                                29
+                            ]
+                        ],
+                        "code_sequence": 5,
+                        "global_sequence": 498392583,
+                        "receiver": "swdev1212121",
+                        "recv_sequence": 18
+                    },
+                    "receiver": "swdev1212121",
+                    "trx_id": "2e611730d904777d5da89e844cac4936da0ff844ad8e3c7eccd5da912423c9e9"
+                },
+                {
+                    "account_ram_deltas": [],
+                    "act": {
+                        "account": "eosio.token",
+                        "authorization": [
+                            {
+                                "actor": "swdev1212121",
+                                "permission": "active"
+                            }
+                        ],
+                        "data": {
+                            "from": "swdev1212121",
+                            "memo": "",
+                            "quantity": "1.0000 EOS",
+                            "to": "paulk1111111"
+                        },
+                        "hex_data": "1044104184ad12c7104208210418b5a9102700000000000004454f530000000000",
+                        "name": "transfer"
+                    },
+                    "action_ordinal": 3,
+                    "block_num": 56110902,
+                    "block_time": "2019-10-22T15:32:46.000",
+                    "closest_unnotified_ancestor_action_ordinal": 1,
+                    "console": "",
+                    "context_free": false,
+                    "creator_action_ordinal": 1,
+                    "elapsed": 7,
+                    "error_code": null,
+                    "except": null,
+                    "producer_block_id": null,
+                    "receipt": {
+                        "abi_sequence": 4,
+                        "act_digest": "fc7afe8d172f698189449bf95d6a2a193e27759a264e21741e00872a48a5ec39",
+                        "auth_sequence": [
+                            [
+                                "swdev1212121",
+                                30
+                            ]
+                        ],
+                        "code_sequence": 5,
+                        "global_sequence": 498392584,
+                        "receiver": "paulk1111111",
+                        "recv_sequence": 19
+                    },
+                    "receiver": "paulk1111111",
+                    "trx_id": "2e611730d904777d5da89e844cac4936da0ff844ad8e3c7eccd5da912423c9e9"
+                }
+            ],
+            "block_num": 56110902,
+            "block_time": "2019-10-22T15:32:46.000",
+            "elapsed": 237,
+            "error_code": null,
+            "except": null,
+            "id": "2e611730d904777d5da89e844cac4936da0ff844ad8e3c7eccd5da912423c9e9",
+            "net_usage": 128,
+            "producer_block_id": null,
+            "receipt": {
+                "cpu_usage_us": 237,
+                "net_usage_words": 16,
+                "status": "executed"
+            },
+            "scheduled": false
+        },
+        "transaction_id": "2e611730d904777d5da89e844cac4936da0ff844ad8e3c7eccd5da912423c9e9"
+    }
+    """
+
+    public static let sendTransAction2ResponseJson = """
     {
         "processed": {
             "account_ram_delta": null,

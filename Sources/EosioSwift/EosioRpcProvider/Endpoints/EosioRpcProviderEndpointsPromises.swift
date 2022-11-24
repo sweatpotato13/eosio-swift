@@ -1,11 +1,3 @@
-//
-//  EosioRpcProviderEndpointsPromises.swift
-//  EosioSwift
-//
-//  Created by Brandon Fancher on 4/18/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
 import PromiseKit
 
@@ -13,6 +5,46 @@ import PromiseKit
 extension EosioRpcProvider {
 
     /* Chain Endpoints */
+
+    /// Call `chain/abi_bin_to_json` and get a Promise back. 
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcAbiBinToJsonRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcAbiBinToJsonResponse` or rejected with an `EosioError`.
+    public func abiBinToJson(_: PMKNamespacer, requestParameters: EosioRpcAbiBinToJsonRequest) -> Promise<EosioRpcAbiBinToJsonResponse> {
+        return Promise { abiBinToJson(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
+    /// Call `chain/abi_json_to_bin` and get a Promise back. 
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcAbiJsonToBinRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcAbiJsonToBinResponse` or rejected with an `EosioError`.
+    public func abiJsonToBin(_: PMKNamespacer, requestParameters: EosioRpcAbiJsonToBinRequest) -> Promise<EosioRpcAbiJsonToBinResponse> {
+        return Promise { abiJsonToBin(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
+    /// Call `chain/get_accounts_by_authorizers` and get a Promise back. 
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcAccountByAuthorizersRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcAccountByAuthorizersResponse` or rejected with an `EosioError`.
+    public func getAccountByAuthorizers(_: PMKNamespacer, requestParameters: EosioRpcAccountByAuthorizersRequest) -> Promise<EosioRpcAccountByAuthorizersResponse> {
+        return Promise { getAccountByAuthorizers(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
+    /// Call `chain/get_activated_protocol_features` and get a Promise back. Retreives the activated protocol features for producer node.
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcActivatedProtocolFeaturesRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcActivatedProtocolFeaturesResponse` or rejected with an `EosioError`.
+    public func getActivatedProtocolFeatures(_: PMKNamespacer, requestParameters: EosioRpcActivatedProtocolFeaturesRequest) -> Promise<EosioRpcActivatedProtocolFeaturesResponse> {
+        return Promise { getActivatedProtocolFeatures(requestParameters: requestParameters, completion: $0.resolve) }
+    }
 
     /// Call `chain/get_account` and get a Promise back. Fetch an account by account name.
     ///
@@ -50,6 +82,14 @@ extension EosioRpcProvider {
     /// - Returns: A Promise fulfilled with an `EosioRpcInfoResponse` or rejected with an `EosioError`.
     public func getInfo(_: PMKNamespacer) -> Promise<EosioRpcInfoResponse> {
         return Promise { getInfo(completion: $0.resolve) }
+    }
+
+    /// Call `chain/get_producer_schedule` and get a Promise back. 
+    ///
+    /// - Parameter _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    /// - Returns: A Promise fulfilled with an `EosioRpcInfoResponse` or rejected with an `EosioError`.
+    public func getProducerSchedule(_: PMKNamespacer) -> Promise<EosioRpcProducerScheduleResponse> {
+        return Promise { getProducerSchedule(completion: $0.resolve) }
     }
 
     /// Call `chain/push_transaction` and get a Promise back. Push a transaction to the blockchain!
@@ -90,6 +130,16 @@ extension EosioRpcProvider {
     /// - Returns: A Promise fulfilled with an `EosioRpcSendTransactionsResponse` or rejected with an `EosioError`.
     public func sendTransactions(_: PMKNamespacer, requestParameters: EosioRpcSendTransactionsRequest) -> Promise<EosioRpcSendTransactionsResponse> {
         return Promise { sendTransactions(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
+    /// Call `chain/send_transaction2` and get a Promise back. Send a transaction to the blockchain!
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcSendTransaction2Request`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcTransactionResponse` or rejected with an `EosioError`.
+    public func sendTransaction2(_: PMKNamespacer, requestParameters: EosioRpcSendTransaction2Request) -> Promise<EosioRpcTransactionResponse> {
+        return Promise { sendTransaction2(requestParameters: requestParameters, completion: $0.resolve) }
     }
 
     /// Call `chain/get_block_header_state` and get a Promise back.
@@ -222,6 +272,16 @@ extension EosioRpcProvider {
         return Promise { getCode(accountName: accountName, completion: $0.resolve) }
     }
 
+    /// Call `chain/get_code_hash` and get a Promise back.
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcCodeHashRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcCodeHashResponse` or rejected with an `EosioError`.
+    public func getCodeHash(_: PMKNamespacer, requestParameters: EosioRpcCodeHashRequest) -> Promise<EosioRpcCodeHashResponse> {
+        return Promise { getCodeHash(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
     /// Call `chain/get_raw_abi` and get a Promise back. Get a raw abi.
     ///
     /// - Parameters:
@@ -230,6 +290,16 @@ extension EosioRpcProvider {
     /// - Returns: A Promise fulfilled with an `EosioRpcRawAbiResponse` or rejected with an `EosioError`.
     public func getRawAbi(_: PMKNamespacer, requestParameters: EosioRpcRawAbiRequest) -> Promise<EosioRpcRawAbiResponse> {
         return Promise { getRawAbi(requestParameters: requestParameters, completion: $0.resolve) }
+    }
+
+    /// Call `chain/get_scheduled_transactions` and get a Promise back. Get a raw abi.
+    ///
+    /// - Parameters:
+    ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
+    ///   - requestParameters: An `EosioRpcScheduledTransactionsRequest`.
+    /// - Returns: A Promise fulfilled with an `EosioRpcScheduledTransactionsResponse` or rejected with an `EosioError`.
+    public func getScheduledTransactions(_: PMKNamespacer, requestParameters: EosioRpcScheduledTransactionsRequest) -> Promise<EosioRpcScheduledTransactionsResponse> {
+        return Promise { getScheduledTransactions(requestParameters: requestParameters, completion: $0.resolve) }
     }
 
     /* History Endpoints */

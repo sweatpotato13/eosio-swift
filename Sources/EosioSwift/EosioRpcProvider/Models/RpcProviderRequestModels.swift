@@ -1,12 +1,15 @@
-//
-//  RequestModels.swift
-//  EosioSwift
-//
-//  Created by Farid Rahmani on 4/10/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import Foundation
+
+/// Base request struct aliased by request types for `get_accounts_by_authorizers` requests.
+public struct EosioAuthorization: Codable {
+    public let actor: String
+    public let permission: String
+
+    public init(actor: String, permission: String) {
+        self.actor = actor
+        self.permission = permission
+    }
+}
 
 /// Base request struct aliased by request types for `get_account`, `get_abi`, `get_raw_code_and_abi`, and `get_code` requests.
 public struct EosioAccountInfo: Codable {
@@ -18,6 +21,68 @@ public struct EosioAccountInfo: Codable {
 }
 
 /* Chain Endpoints */
+
+/// The request struct for `abi_bin_to_json` RPC requests.
+public struct EosioRpcAbiBinToJsonRequest: Codable {
+    public let code: String?
+    public let action: String?
+    public let binargs: String?
+
+    public init(code: String? = nil, action: String? = nil, binargs: String? = nil) {
+        self.code = code
+        self.action = action
+        self.binargs = binargs
+    }
+}
+
+/// The request struct for `abi_json_to_bin` RPC requests.
+public struct EosioRpcAbiJsonToBinRequest: Codable {
+    public let code: String?
+    public let action: String?
+    public var args = [String]()
+
+    public init(code: String? = nil, action: String? = nil, args: [String] = []) {
+        self.code = code
+        self.action = action
+        self.args = args
+    }
+}
+
+/// The request struct for `get_accounts_by_authorizers` RPC requests.
+public struct EosioRpcAccountByAuthorizersRequest: Codable {
+    public var accounts = [EosioAuthorization]()
+    public var keys = [String]()
+
+    public init(accounts: [EosioAuthorization] = [], keys: [String] = []) {
+        self.accounts = accounts
+        self.keys = keys
+    }
+}
+
+/// The request struct for `get_activated_protocol_features` RPC requests.
+public struct EosioRpcActivatedProtocolFeaturesRequest: Codable {
+    public let lowerBound: String?
+    public let upperBound: String?
+    public let limit: Int32?
+    public let searchByBlockNum: Bool? 
+    public let reverse: Bool?
+
+    public init(lowerBound: String? = nil, upperBound: String? = nil, limit: Int32? = nil, searchByBlockNum: Bool? = nil, reverse: Bool? = nil) {
+        self.lowerBound = lowerBound
+        self.upperBound = upperBound
+        self.limit = limit
+        self.searchByBlockNum = searchByBlockNum
+        self.reverse = reverse
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case lowerBound = "lower_bound"
+        case upperBound = "upper_bound"
+        case limit
+        case searchByBlockNum = "search_by_block_num"
+        case reverse
+    }
+}
 
 /// The request struct for `get_account` RPC requests.
 public typealias EosioRpcAccountRequest = EosioAccountInfo
@@ -262,6 +327,12 @@ public struct EosioRpcCodeRequest: Codable {
     }
 }
 
+/// The request type for `get_code_hash` RPC requests.
+public typealias EosioRpcCodeHashRequest = EosioAccountInfo
+
+/// The request type for `get_scheduled_transactions` RPC requests.
+public typealias EosioRpcScheduledTransactionsRequest = EosioRpcProducersRequest
+
 /* History Endpoints */
 
 /// The request struct for `get_actions` RPC requests.
@@ -324,6 +395,32 @@ public struct EosioRpcSendTransactionRequest: Codable {
 
     /// Initialize an `EosioRpcSendTransactionRequest`.
     public init(signatures: [String] = [], compression: Int = 0, packedContextFreeData: String = "", packedTrx: String = "") {
+        self.signatures = signatures
+        self.compression = compression
+        self.packedContextFreeData = packedContextFreeData
+        self.packedTrx = packedTrx
+    }
+}
+
+/// The request struct for `send_transaction2` RPC requests.
+public struct EosioRpcSendTransaction2Request: Codable {
+    public var return_failure_trace: Bool
+    public var retry_trx: Bool
+    public var retry_trx_num_blocks = 0
+    /// Array of signatures as Strings.
+    public var signatures = [String]()
+    /// Compression
+    public var compression = 0
+    /// Context free data, packed.
+    public var packedContextFreeData = ""
+    /// The serialized transaction as a hex String.
+    public var packedTrx = ""
+
+    /// Initialize an `EosioRpcSendTransaction2Request`.
+    public init(return_failure_trace: Bool = true, retry_trx: Bool = false, retry_trx_num_blocks: Int = 0, signatures: [String] = [], compression: Int = 0, packedContextFreeData: String = "", packedTrx: String = "") {
+        self.return_failure_trace = return_failure_trace
+        self.retry_trx = retry_trx
+        self.retry_trx_num_blocks = retry_trx_num_blocks
         self.signatures = signatures
         self.compression = compression
         self.packedContextFreeData = packedContextFreeData
