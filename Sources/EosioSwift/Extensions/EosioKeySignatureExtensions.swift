@@ -206,7 +206,6 @@ public extension Data {
             throw EosioError(.signatureProviderError, reason: "Empty string is not an EOS private key")
         }
         let components = try eosioPrivateKey.eosioComponents()
-
         // decode the basse58 string into Data with the last 4 bytes being the checksum, throw error if not a valid b58 string
         guard let keyAndChecksum = Data.decode(base58: components.body) else {
             throw EosioError(.signatureProviderError, reason: "\(components.body) is not valid base 58")
@@ -224,8 +223,14 @@ public extension Data {
             keyToHash = key + "R1".data(using: .utf8)!
             hash = RIPEMD160.hash(message: keyToHash)
         } else if components.version == "K1" {
-            keyToHash = key + "K1".data(using: .utf8)!
-            hash = RIPEMD160.hash(message: keyToHash)
+            if(components.prefix == "PVT"){
+                keyToHash = key + "K1".data(using: .utf8)!
+                hash = RIPEMD160.hash(message: keyToHash)
+            }
+            else{
+                keyToHash = key
+                hash = keyToHash.sha256.sha256
+            }
         } else {
             throw EosioError(.signatureProviderError, reason: "\(eosioPrivateKey) is not valid key")
         }
@@ -244,6 +249,7 @@ public extension Data {
         guard key.count == 32 else {
             throw EosioError(.signatureProviderError, reason: "Private key: \(key.hex) should be 32 bytes")
         }
+
         self = key
     }
 

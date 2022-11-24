@@ -29,7 +29,7 @@ class EosioKeySignatureExtensionTests: XCTestCase {
 
     let privateKeyHex = "c057a9462bc219abd32c6ca5c656cc8226555684d1ee8d53124da40330f656c1"
     let privateKey = "5KGziAsYALbLJiaaynE1GyG9fAq6p5n48K1B1JTQqCDfAJnioJD"
-    let privateKeyK1 = "PVT_K1_5KGziAsYALbLJiaaynE1GyG9fAq6p5n48K1B1JTQqCDfAJnioJD"
+    let privateKeyK1 = "PVT_K1_2Ti8VRT5t2M3iCJwan7BvX2Sa1BbwuyQVwPn8QfbKN1ziXe7FD"
     let privateKeyInvalid1 = "5KGziAsYALbLJiaaynE1GyG9fAq6p5n48K1B1JTQqCDfAJnioJC"
     let privateKeyInvalid2 = "PVT_K1_6KGziAsYALbLJiaaynE1GyG9fAq6p5n48K1B1JTQqCDfAJnioJD"
 
