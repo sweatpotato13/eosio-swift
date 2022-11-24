@@ -490,8 +490,8 @@ public struct EosioRpcAccountByAuthorizersResponse: Decodable, EosioRpcResponseP
 public struct EosioRpcActivatedProtocolFeaturesResponse: Decodable, EosioRpcResponseProtocol {
     public var _rawResponse: Any?
 
-    public var activatedProtocolFeatures = [String]()
-    public var more: String
+    public var activatedProtocolFeatures: [String: Any]
+    public var more: EosioUInt64
 
     enum CodingKeys: String, CodingKey {
         case activatedProtocolFeatures = "activated_protocol_features"
@@ -501,8 +501,9 @@ public struct EosioRpcActivatedProtocolFeaturesResponse: Decodable, EosioRpcResp
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        activatedProtocolFeatures = try container.decode([String].self, forKey: .activatedProtocolFeatures)
-        more = try container.decodeIfPresent(String.self, forKey: .more) ?? ""
+        let activatedProtocolFeaturesContainer = try? container.nestedContainer(keyedBy: DynamicKey.self, forKey: .activatedProtocolFeatures)
+        activatedProtocolFeatures = activatedProtocolFeaturesContainer?.decodeDynamicKeyValues() ?? [String: Any]()
+        more = try container.decode(EosioUInt64.self, forKey: .more)
     }
 }
 

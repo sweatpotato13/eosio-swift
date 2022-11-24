@@ -12,8 +12,8 @@ extension EosioRpcProvider {
     ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
     ///   - requestParameters: An `EosioRpcAbiBinToJsonRequest`.
     /// - Returns: A Promise fulfilled with an `EosioRpcAbiBinToJsonResponse` or rejected with an `EosioError`.
-    public func AbiBinToJson(_: PMKNamespacer, requestParameters: EosioRpcAbiBinToJsonRequest) -> Promise<EosioRpcAbiBinToJsonResponse> {
-        return Promise { AbiBinToJson(requestParameters: requestParameters, completion: $0.resolve) }
+    public func abiBinToJson(_: PMKNamespacer, requestParameters: EosioRpcAbiBinToJsonRequest) -> Promise<EosioRpcAbiBinToJsonResponse> {
+        return Promise { abiBinToJson(requestParameters: requestParameters, completion: $0.resolve) }
     }
 
     /// Call `chain/abi_json_to_bin` and get a Promise back. 
@@ -22,8 +22,8 @@ extension EosioRpcProvider {
     ///   - _: Differentiates call signature from that of non-promise-returning endpoint method. Pass in `.promise` as the first parameter to call this method.
     ///   - requestParameters: An `EosioRpcAbiJsonToBinRequest`.
     /// - Returns: A Promise fulfilled with an `EosioRpcAbiJsonToBinResponse` or rejected with an `EosioError`.
-    public func AbiJsonToBin(_: PMKNamespacer, requestParameters: EosioRpcAbiJsonToBinRequest) -> Promise<EosioRpcAbiJsonToBinResponse> {
-        return Promise { AbiJsonToBin(requestParameters: requestParameters, completion: $0.resolve) }
+    public func abiJsonToBin(_: PMKNamespacer, requestParameters: EosioRpcAbiJsonToBinRequest) -> Promise<EosioRpcAbiJsonToBinResponse> {
+        return Promise { abiJsonToBin(requestParameters: requestParameters, completion: $0.resolve) }
     }
 
     /// Call `chain/get_accounts_by_authorizers` and get a Promise back. 

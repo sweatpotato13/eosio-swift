@@ -9,7 +9,7 @@ extension EosioRpcProvider {
     /// - Parameters:
     ///   - requestParameters: An `EosioRpcAbiBinToJsonRequest`.
     ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcAbiBinToJsonResponse` and an optional `EosioError`.
-    public func AbiBinToJson(requestParameters: EosioRpcAbiBinToJsonRequest, completion:@escaping (EosioResult<EosioRpcAbiBinToJsonResponse, EosioError>) -> Void) {
+    public func abiBinToJson(requestParameters: EosioRpcAbiBinToJsonRequest, completion:@escaping (EosioResult<EosioRpcAbiBinToJsonResponse, EosioError>) -> Void) {
         getResource(rpc: "chain/abi_bin_to_json", requestParameters: requestParameters) {(result: EosioRpcAbiBinToJsonResponse?, error: EosioError?) in
             completion(EosioResult(success: result, failure: error)!)
         }
@@ -20,7 +20,7 @@ extension EosioRpcProvider {
     /// - Parameters:
     ///   - requestParameters: An `EosioRpcAbiJsonToBinRequest`.
     ///   - completion: Called with the response, as an `EosioResult` consisting of an `EosioRpcAbiJsonToBinResponse` and an optional `EosioError`.
-    public func AbiJsonToBin(requestParameters: EosioRpcAbiJsonToBinRequest, completion:@escaping (EosioResult<EosioRpcAbiJsonToBinResponse, EosioError>) -> Void) {
+    public func abiJsonToBin(requestParameters: EosioRpcAbiJsonToBinRequest, completion:@escaping (EosioResult<EosioRpcAbiJsonToBinResponse, EosioError>) -> Void) {
         getResource(rpc: "chain/abi_json_to_bin", requestParameters: requestParameters) {(result: EosioRpcAbiJsonToBinResponse?, error: EosioError?) in
             completion(EosioResult(success: result, failure: error)!)
         }
