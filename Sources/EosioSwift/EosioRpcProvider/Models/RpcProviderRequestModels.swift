@@ -74,6 +74,14 @@ public struct EosioRpcActivatedProtocolFeaturesRequest: Codable {
         self.searchByBlockNum = searchByBlockNum
         self.reverse = reverse
     }
+
+    enum CodingKeys: String, CodingKey {
+        case lowerBound = "lower_bound"
+        case upperBound = "upper_bound"
+        case limit
+        case searchByBlockNum = "search_by_block_num"
+        case reverse
+    }
 }
 
 /// The request struct for `get_account` RPC requests.

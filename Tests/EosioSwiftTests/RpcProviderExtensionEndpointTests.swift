@@ -1,11 +1,3 @@
-//
-//  RpcProviderExtensionEndpointTests.swift
-//  EosioSwiftTests
-//
-//  Created by Ben Martell on 4/15/19.
-//  Copyright (c) 2017-2019 block.one and its contributors. All rights reserved.
-//
-
 import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
@@ -59,6 +51,88 @@ class RpcProviderExtensionEndpointTests: XCTestCase {
         }
         wait(for: [expect], timeout: 30)
     }
+    
+    /// Test testAbiJsonToBin() implementation.
+    // swiftlint:disable function_body_length
+    func testAbiJsonToBin() {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath)
+            callCount += 1
+            return retVal
+        }).name = "AbiJsonToBin stub"
+        let expect = expectation(description: "testAbiJsonToBin")
+        let requestParameters = EosioRpcAbiJsonToBinRequest(code: "eosio.token", action: "transfer", args: ["{}"])
+        rpcProvider?.abiJsonToBin(requestParameters: requestParameters) { response in
+            switch response {
+            case .success(let EosioRpcAbiJsonToBinResponse):
+                XCTAssertNotNil(EosioRpcAbiJsonToBinResponse._rawResponse)
+                XCTAssert(EosioRpcAbiJsonToBinResponse.binargs == "0000000000ea305500000000000000a8ed32322e0000000000000004454f530000000000")
+
+            case .failure(let err):
+                print(err.description)
+                XCTFail("Failed abi_json_to_bin.")
+            }
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 30)
+    }
+    // swiftlint:enable function_body_length
+
+    /// Test testAbiBinToJson() implementation.
+    // swiftlint:disable function_body_length
+    func testAbiBinToJson() {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath)
+            callCount += 1
+            return retVal
+        }).name = "AbiBinToJson stub"
+        let expect = expectation(description: "testAbiBinToJson")
+        let requestParameters = EosioRpcAbiBinToJsonRequest(code: "eosio.token", action: "transfer", binargs: "0x1234567890")
+        rpcProvider?.abiBinToJson(requestParameters: requestParameters) { response in
+            switch response {
+            case .success(let EosioRpcAbiBinToJsonResponse):
+                XCTAssertNotNil(EosioRpcAbiBinToJsonResponse._rawResponse)
+                XCTAssertNotNil(EosioRpcAbiBinToJsonResponse.args)
+
+            case .failure(let err):
+                print(err.description)
+                XCTFail("Failed abi_bin_to_json.")
+            }
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 30)
+    }
+    // swiftlint:enable function_body_length
+
+    /// Test testGetActivatedProtocolFeatures() implementation.
+    // swiftlint:disable function_body_length
+    func testGetActivatedProtocolFeatures() {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath)
+            callCount += 1
+            return retVal
+        }).name = "GetActivatedProtocolFeatures stub"
+        let expect = expectation(description: "testGetActivatedProtocolFeatures")
+        let requestParameters = EosioRpcActivatedProtocolFeaturesRequest(lowerBound:"0000", upperBound: "0001", limit: 10, searchByBlockNum: true, reverse: true)
+        rpcProvider?.getActivatedProtocolFeatures(requestParameters: requestParameters) { response in
+            switch response {
+            case .success(let EosioRpcActivatedProtocolFeaturesResponse):
+                XCTAssertNotNil(EosioRpcActivatedProtocolFeaturesResponse._rawResponse)
+                XCTAssertNotNil(EosioRpcActivatedProtocolFeaturesResponse.activatedProtocolFeatures)
+                XCTAssertNotNil(EosioRpcActivatedProtocolFeaturesResponse.more)
+
+            case .failure(let err):
+                print(err.description)
+                XCTFail("Failed get_activated_protocol_features.")
+            }
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 30)
+    }
+    // swiftlint:enable function_body_length
 
     /// Test testGetBlockHeaderState() implementation.
     // swiftlint:disable function_body_length
@@ -460,6 +534,31 @@ class RpcProviderExtensionEndpointTests: XCTestCase {
         wait(for: [expect], timeout: 30)
     }
 
+    /// Test getCodeHash() implementation.
+    func testgetCodeHash() {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath)
+            callCount += 1
+            return retVal
+        }).name = "GetCodeHash stub"
+        let expect = expectation(description: "testGetCodeHash")
+        let requestParameters = EosioRpcCodeHashRequest(accountName: "eosio")
+        rpcProvider?.getCodeHash(requestParameters: requestParameters) { response in
+            switch response {
+            case .success(let eosioRpcCodeHashResponse):
+                XCTAssertNotNil(eosioRpcCodeHashResponse._rawResponse)
+                XCTAssert(eosioRpcCodeHashResponse.accountName == "eosio")
+                XCTAssert(eosioRpcCodeHashResponse.codeHash == "0000000000000000000000000000000000000000000000000000000000000000")
+            case .failure(let err):
+                print(err.description)
+                XCTFail("Failed get_code_hash")
+            }
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 30)
+    }
+
     /// Test getTableRows() implementation.
     func testGetTableRows() {
          var callCount = 1
@@ -544,6 +643,57 @@ class RpcProviderExtensionEndpointTests: XCTestCase {
                 XCTAssert(eosioRpcProducersResponse.rows[0].unpaidBlocks.value == 0)
                 XCTAssert(eosioRpcProducersResponse.rows[1].owner == "blkproducer3")
                 XCTAssert(eosioRpcProducersResponse.rows[0].isActive == 1)
+            case .failure(let err):
+                print(err.description)
+                XCTFail("Failed get_producers")
+            }
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 30)
+    }
+
+    /// Test getProducerSchedule implementation.
+    func testGetProducerSchedule() {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath)
+            callCount += 1
+            return retVal
+        }).name = "GetProducerSchedule stub"
+        let expect = expectation(description: "testGetProducerSchedule")
+
+        rpcProvider?.getProducerSchedule() { response in
+            switch response {
+            case .success(let EosioRpcProducerScheduleResponse):
+                XCTAssertNotNil(EosioRpcProducerScheduleResponse._rawResponse)
+                XCTAssertNotNil(EosioRpcProducerScheduleResponse.active)
+                XCTAssertNotNil(EosioRpcProducerScheduleResponse.pending)
+                XCTAssertNotNil(EosioRpcProducerScheduleResponse.proposed)
+            case .failure(let err):
+                print(err.description)
+                XCTFail("Failed get_producer_schedule")
+            }
+            expect.fulfill()
+        }
+        wait(for: [expect], timeout: 30)
+    }
+
+    /// Test getScheduledTransactions implementation.
+    func testGetScheduledTransactions() {
+        var callCount = 1
+        (stub(condition: isHost("localhost")) { request in
+            let retVal = RpcTestConstants.getHHTTPStubsResponse(callCount: callCount, urlRelativePath: request.url?.relativePath)
+            callCount += 1
+            return retVal
+        }).name = "GetScheduledTransactions stub"
+        let expect = expectation(description: "testGetScheduledTransactions")
+        let requestParameters = EosioRpcScheduledTransactionsRequest(limit: 10, lowerBound: "blkproducer2", json: true)
+        rpcProvider?.getScheduledTransactions(requestParameters: requestParameters) { response in
+            switch response {
+            case .success(let EosioRpcScheduledTransactionsResponse):
+                XCTAssertNotNil(EosioRpcScheduledTransactionsResponse._rawResponse)
+                XCTAssertNotNil(EosioRpcScheduledTransactionsResponse.transactions)
+                XCTAssertNotNil(EosioRpcScheduledTransactionsResponse.more)
             case .failure(let err):
                 print(err.description)
                 XCTFail("Failed get_producers")

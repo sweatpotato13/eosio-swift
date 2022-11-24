@@ -12,9 +12,9 @@ extension EosioRpcProvider {
     /// - Parameters:
     ///   - requestParameters: An `EosioRpcAbiBinToJsonRequest`.
     /// - Returns: A Publisher fulfilled with an `EosioRpcAbiBinToJsonResponse` or rejected with an `EosioError`.
-    public func AbiBinToJsonPublisher(requestParameters: EosioRpcAbiBinToJsonRequest) -> AnyPublisher<EosioRpcAbiBinToJsonResponse, EosioError> {
+    public func abiBinToJsonPublisher(requestParameters: EosioRpcAbiBinToJsonRequest) -> AnyPublisher<EosioRpcAbiBinToJsonResponse, EosioError> {
         return Future<EosioRpcAbiBinToJsonResponse, EosioError> { [weak self] promise in
-            self?.AbiBinToJson(requestParameters: requestParameters, completion: { promise($0.asResult) })
+            self?.abiBinToJson(requestParameters: requestParameters, completion: { promise($0.asResult) })
         }.eraseToAnyPublisher()
     }
 
@@ -23,9 +23,9 @@ extension EosioRpcProvider {
     /// - Parameters:
     ///   - requestParameters: An `EosioRpcAbiJsonToBinRequest`.
     /// - Returns: A Publisher fulfilled with an `EosioRpcAbiJsonToBinResponse` or rejected with an `EosioError`.
-    public func AbiJsonToBinPublisher(requestParameters: EosioRpcAbiJsonToBinRequest) -> AnyPublisher<EosioRpcAbiJsonToBinResponse, EosioError> {
+    public func abiJsonToBinPublisher(requestParameters: EosioRpcAbiJsonToBinRequest) -> AnyPublisher<EosioRpcAbiJsonToBinResponse, EosioError> {
         return Future<EosioRpcAbiJsonToBinResponse, EosioError> { [weak self] promise in
-            self?.AbiJsonToBin(requestParameters: requestParameters, completion: { promise($0.asResult) })
+            self?.abiJsonToBin(requestParameters: requestParameters, completion: { promise($0.asResult) })
         }.eraseToAnyPublisher()
     }
 
